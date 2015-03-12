@@ -5,6 +5,9 @@ void ProjectorView::setup()
 	ofBackground(0);
 	ofSetVerticalSync(true);
 
+	//Config
+	this->loadConfig();
+
 	//Kinect
 	if(!this->initKinect())
 	{
@@ -13,18 +16,31 @@ void ProjectorView::setup()
 		std::exit(1);
 	}
 
+	//Character
+	_Roma.setupCharacter();
+
 	//Connector
 	_Connector.initConnector("127.0.0.1", 2233, 5566);
 	ofAddListener(_Connector.AirwavesConnectorEvent, this, &ProjectorView::onConnectorEvent);
 
+	_Background.loadImage("background_1.jpg");
+
 	_SkeletonHandler.setDisplay(true);
+
+	_fMainTimer = ofGetElapsedTimef();
 }
 
 //--------------------------------------------------------------
 void ProjectorView::update()
 {
+	float fDelta_ = ofGetElapsedTimef() - _fMainTimer;
+	_fMainTimer += fDelta_;
+
 	//Kinect
 	this->updateKinect();
+
+	//Character
+	_Roma.updateCharacter(fDelta_, _SkeletonHandler);
 
 	_Connector.updateConnector();
 }
@@ -34,6 +50,9 @@ void ProjectorView::draw()
 {
 	//Kinect
 	this->drawKinect();
+
+	//Character
+	_Roma.drawCharacter();
 }
 
 //--------------------------------------------------------------
@@ -52,7 +71,7 @@ void ProjectorView::keyPressed(int key)
 	{
 	case 's':
 		{
-			_Connector.sendCMD(eCONNECTOR_CMD::eP2D_TEACHING_END, "P2D");
+			this->saveConfig();
 			break;
 		}
 
@@ -111,7 +130,8 @@ bool ProjectorView::initKinect()
 		_bHaveUser = false;
 		_Kinect.enableSkeleton();
 	}
-
+	_SkeletonHandler.setStartPos(_exKinectStartPos);
+	_SkeletonHandler.setScale(_exKinectScale);
 
 	return bResult_;
 }
@@ -156,11 +176,46 @@ void ProjectorView::stopKinect()
 #pragma endregion
 
 #pragma region Connector
-
+//--------------------------------------------------------------
 void ProjectorView::onConnectorEvent(string& e)
 {
 	cout<<e<<endl;
 }
-
 #pragma endregion
+
+#pragma region Config
+//-------------------------------------------------
+//Config
+void ProjectorView::loadConfig()
+{
+	ofxXmlSettings	xml_;
+	_exKinectStartPos.set(0, 0);
+	_exKinectScale = 1.0;
+	if(!xml_.loadFile("_config.xml"))
+	{
+		ofLog(OF_LOG_WARNING, "Can't found _config.xml, used default setting");
+		return;
+	}
+
+	
+	_exKinectStartPos.x = xml_.getValue("KINECT_START_X", 0);
+	_exKinectStartPos.y = xml_.getValue("KINECT_START_Y", 1.0);
+	_exKinectScale = xml_.getValue("KINECT_SCALE", 1.0);
+}
+
+//-------------------------------------------------
+void ProjectorView::saveConfig()
+{
+	ofxXmlSettings	xml_;
+	xml_.setValue("KINECT_START_X", _SkeletonHandler.getStartPos().x);
+	xml_.setValue("KINECT_START_Y",_SkeletonHandler.getStartPos().y);
+	xml_.setValue("KINECT_SCALE", _SkeletonHandler.getScale());
+
+	if(xml_.saveFile("_config.xml"))
+	{
+		ofLog(OF_LOG_NOTICE, "Save config file success");
+	}
+}
+#pragma endregion
+
 

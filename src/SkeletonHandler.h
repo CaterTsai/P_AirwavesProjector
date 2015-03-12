@@ -20,6 +20,11 @@ public:
 
 //Inline method
 public:
+	inline bool getHaveUser() const
+	{
+		return _bHaveUser;
+	}
+
 	//Start Pos
 	inline void setStartPos(const ofPoint StartPos)
 	{

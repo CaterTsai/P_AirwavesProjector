@@ -3,7 +3,7 @@
 
 #include "ofMain.h"
 
-const int cWINDOW_WIDTH = 1353;
+const int cWINDOW_WIDTH = 1215;
 const int cWINDOW_HEIGHT = 1024;
 
 #endif // !AIRWAVES_CONST_PARAMETER_PROJECTOR
