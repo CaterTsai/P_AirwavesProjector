@@ -25,6 +25,11 @@ public:
 		return _bHaveUser;
 	}
 
+	inline float getBodySize() const
+	{
+		return (cDEPTH_HEIGHT - _Skeleton.aJoints[JointType_Head].y) * _fScale;
+	}
+
 	//Start Pos
 	inline void setStartPos(const ofPoint StartPos)
 	{

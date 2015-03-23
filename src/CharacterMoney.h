@@ -1,22 +1,12 @@
-#ifndef AIRWAVE_PROJECTOR_ROMA
-#define AIRWAVE_PROJECTOR_ROMA
+#ifndef AIRWAVE_PROJECTOR_MONEY
+#define AIRWAVE_PROJECTOR_MONEY
 
 #include "BaseCharacter.h"
-#include "ArrowShooter.h"
 
-class CharacterRoma : public IBaseCharacter
+class CharacterMoney : public IBaseCharacter
 {
 public:
 	virtual void setupCharacter() override;
-	
-//----------------------------------
-//Arrow Shooter
-//----------------------------------
-public:
-	void onArrowHit(bool& bDefence);
-
-private:
-	ArrowShooter	_ArrowShooter;
 
 //----------------------------------
 //Character Object Update
@@ -28,23 +18,17 @@ private:
 //Teaching
 //----------------------------------
 private:
-	virtual void setupTeaching() override;
+	void setupTeaching();
 	virtual void updateTeaching(float fDelta, SkeletonHandler& SkeletonHandler) override;
 	virtual void drawTeaching() override;
-
-private:
-	float										_fShootTimer;
-	vector<pair<bool, eSHOOT_TARGET_TYPE>>		_TeachingList;
-	int											_TeachingIndex;
 
 //----------------------------------
 //Gaming
 //----------------------------------
 private:
-	virtual void setupGaming();
+	void setupGaming();
 	virtual void updateGaming(float fDelta, SkeletonHandler& SkeletonHandler) override;
 	virtual void drawGaming() override;
-
 };
 
-#endif // !AIRWAVE_PROJECTOR_ROMA
+#endif // !AIRWAVE_PROJECTOR_MONEY

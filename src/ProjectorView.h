@@ -7,7 +7,7 @@
 #include "ofxCTKinectV2.h"
 #include "ofxXmlSettings.h"
 
-#include "CharacterRoma.h"
+#include "CharacterMgr.h"
 
 class ProjectorView : public ofBaseApp
 {
@@ -21,6 +21,7 @@ public:
 public:
 	float		_fMainTimer;
 	ofImage		_Background;
+	ofImage		_Human;
 
 //-------------------------------------------------
 //Kinect 
@@ -43,8 +44,10 @@ private:
 //-------------------------------------------------
 //Character
 //-------------------------------------------------
+public:
+	void onCharacterEvent(string& e);
 private:
-	CharacterRoma	_Roma;
+	CharacterMgr	_CharacterMgr;
 
 
 //-------------------------------------------------

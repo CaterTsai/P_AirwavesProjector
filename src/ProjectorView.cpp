@@ -17,13 +17,15 @@ void ProjectorView::setup()
 	}
 
 	//Character
-	_Roma.setupCharacter();
+	_CharacterMgr.setupCharacterMgr();
+	ofAddListener(IBaseCharacter::CharacterEvent, this, &ProjectorView::onCharacterEvent);
 
 	//Connector
 	_Connector.initConnector("127.0.0.1", 2233, 5566);
 	ofAddListener(_Connector.AirwavesConnectorEvent, this, &ProjectorView::onConnectorEvent);
 
 	_Background.loadImage("background_1.jpg");
+	_Human.loadImage("human_2.png");
 
 	_SkeletonHandler.setDisplay(true);
 
@@ -40,7 +42,7 @@ void ProjectorView::update()
 	this->updateKinect();
 
 	//Character
-	_Roma.updateCharacter(fDelta_, _SkeletonHandler);
+	_CharacterMgr.updateCharacterMgr(fDelta_, _SkeletonHandler);
 
 	_Connector.updateConnector();
 }
@@ -48,11 +50,18 @@ void ProjectorView::update()
 //--------------------------------------------------------------
 void ProjectorView::draw()
 {
+	ofSetColor(255);
+
+	_Background.draw(0, 0);
+	
+	//Character
+	_CharacterMgr.drawCharacterMgr();
+
+	//Debug
+	_Human.draw(ofGetWindowWidth()/2 - _Human.width/2, ofGetWindowHeight() - _Human.height);
+
 	//Kinect
 	this->drawKinect();
-
-	//Character
-	_Roma.drawCharacter();
 }
 
 //--------------------------------------------------------------
@@ -69,12 +78,47 @@ void ProjectorView::keyPressed(int key)
 
 	switch(key)
 	{
-	case 's':
+	//Character
+	case '1':
 		{
-			this->saveConfig();
-			break;
+			if(!_bHaveUser)
+			{
+				return;
+			}
+			_CharacterMgr.setCharacter(eCHARACTER_ROMA, _SkeletonHandler.getBodySize());
+			_CharacterMgr.play();
 		}
-
+		break;
+	case '2':
+		{
+			if(!_bHaveUser)
+			{
+				return;
+			}
+			_CharacterMgr.setCharacter(eCHARACTER_ALIEN, _SkeletonHandler.getBodySize());
+			_CharacterMgr.play();
+		}
+		break;
+	case '3':
+		{
+			if(!_bHaveUser)
+			{
+				return;
+			}
+			_CharacterMgr.setCharacter(eCHARACTER_ANGEL, _SkeletonHandler.getBodySize());
+			_CharacterMgr.play();
+		}
+		break;
+	case '4':
+		{
+			if(!_bHaveUser)
+			{
+				return;
+			}
+			_CharacterMgr.setCharacter(eCHARACTER_MONEY, _SkeletonHandler.getBodySize());
+			_CharacterMgr.play();
+		}
+		break;
 	//Kinect ctrl
 	case 'k':
 		{
@@ -88,34 +132,39 @@ void ProjectorView::keyPressed(int key)
 			}
 			break;
 		}
-	//Translate
-	case OF_KEY_UP:
-		StartPos_.set(StartPos_.x, StartPos_.y - 1);
-		_SkeletonHandler.setStartPos(StartPos_);
-		break;
-	case OF_KEY_DOWN:
-		StartPos_.set(StartPos_.x, StartPos_.y + 1);
-		_SkeletonHandler.setStartPos(StartPos_);
-		break;
-	case OF_KEY_LEFT:
-		StartPos_.set(StartPos_.x - 1, StartPos_.y);
-		_SkeletonHandler.setStartPos(StartPos_);
-		break;
-	case OF_KEY_RIGHT:
-		StartPos_.set(StartPos_.x + 1, StartPos_.y);
-		_SkeletonHandler.setStartPos(StartPos_);
-		break;
+	//case 's':
+	//	{
+	//		this->saveConfig();
+	//		break;
+	//	}
+	////Translate
+	//case OF_KEY_UP:
+	//	StartPos_.set(StartPos_.x, StartPos_.y - 1);
+	//	_SkeletonHandler.setStartPos(StartPos_);
+	//	break;
+	//case OF_KEY_DOWN:
+	//	StartPos_.set(StartPos_.x, StartPos_.y + 1);
+	//	_SkeletonHandler.setStartPos(StartPos_);
+	//	break;
+	//case OF_KEY_LEFT:
+	//	StartPos_.set(StartPos_.x - 1, StartPos_.y);
+	//	_SkeletonHandler.setStartPos(StartPos_);
+	//	break;
+	//case OF_KEY_RIGHT:
+	//	StartPos_.set(StartPos_.x + 1, StartPos_.y);
+	//	_SkeletonHandler.setStartPos(StartPos_);
+	//	break;
 
-	//Scale
-	case '1':
-		if( (fScale_ - 0.05) >= .0)
-		{
-			_SkeletonHandler.setScale(fScale_ - 0.05);
-		}
-		break;
-	case '2':
-		_SkeletonHandler.setScale(fScale_ + 0.05);
-		break;
+	////Scale
+	//case '1':
+	//	if( (fScale_ - 0.05) >= .0)
+	//	{
+	//		_SkeletonHandler.setScale(fScale_ - 0.05);
+	//	}
+	//	break;
+	//case '2':
+	//	_SkeletonHandler.setScale(fScale_ + 0.05);
+	//	break;
 	}
 }
 
@@ -175,6 +224,14 @@ void ProjectorView::stopKinect()
 }
 #pragma endregion
 
+#pragma region Character
+//--------------------------------------------------------------
+void ProjectorView::onCharacterEvent(string& e)
+{
+	cout<<e<<endl;
+}
+#pragma endregion
+
 #pragma region Connector
 //--------------------------------------------------------------
 void ProjectorView::onConnectorEvent(string& e)
@@ -217,5 +274,3 @@ void ProjectorView::saveConfig()
 	}
 }
 #pragma endregion
-
-
