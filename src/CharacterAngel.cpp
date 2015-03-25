@@ -17,11 +17,11 @@ void CharacterAngel::setupCharacter()
 	_HeartManager.setup();
 	ofAddListener(_HeartManager.HeartEvent, this, &CharacterAngel::onHeartHit);
 
-	//Teaching
-	this->setupTeaching();
+	////Teaching
+	//this->setupTeaching();
 
-	//Gaming
-	this->setupGaming();
+	////Gaming
+	//this->setupGaming();
 
 	_eHandState = eBOTH_HAND_WAIT;
 	_GestureCounter = 0;

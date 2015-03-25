@@ -24,6 +24,15 @@ static pair<float, float>	cARROW_DURATION = make_pair(2, 5);
 static int cARROW_START_X = 300;
 static int cARROW_START_RANDOM = 30;
 
+//Alien
+static float cALIEN_FADEIN_TIME = 1.0;
+static float cALIEN_ATTRACTIVE_TIME = 5.0;
+static int cALIEN_INTERVAL_NUM = 7;
+static float cUFO_INTERVAL_DURATION = 0.5;
+static pair<float, float>	cALIEN_SCALE = make_pair(0.5, 0.8);
+static pair<float, float>	cALIEN_CREATE_DURATION = make_pair(0.5, 1.0);
+static int cALIEN_TEACHING_STEPS = 2;
+
 //Angel
 static float cHEART_FADEOUT_TIME = 1.0;
 static pair<float, float>	cHEART_SCALE = make_pair(0.3, 0.5);

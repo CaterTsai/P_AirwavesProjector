@@ -6,11 +6,106 @@ void CharacterAlien::setupCharacter()
 	CharacterObj	AlienHeadObj_;
 	AlienHeadObj_.setup(NAME_MGR::C_Alien_Head, "Alien/head.jpg", ofVec2f(157, 295), 0.7);
 
-
 	_ObjectList.push_back(AlienHeadObj_);
 
+	//Alien Catcher
+	_eHandState = eNO_LOCKON;
+	_AlienCatcher.setup();
+	ofAddListener(_AlienCatcher._AlienEvent, this, &CharacterAlien::onLastAlien);
 	_bIsSetup = true;
 }
+
+#pragma region Alien Cathcer
+//--------------------------------------------------------------
+void CharacterAlien::onLastAlien(string& e)
+{
+	if(_eState == eCHARACTER_TEACHING)
+	{
+		this->addTeachingAlien();
+	}
+}
+
+//--------------------------------------------------------------
+void CharacterAlien::addTeachingAlien()
+{
+	switch(_iAlienCounter)
+	{
+	case 2:
+		_AlienCatcher.addAlien(200);
+		_iAlienCounter--;
+		break;
+	case 1:
+		_AlienCatcher.addAlien(cWINDOW_WIDTH - 200);
+		_iAlienCounter--;
+		break;
+	case 0:
+		//Finish Teaching
+		_eState = eCHARACTER_GAMING;
+		_AlienCatcher.setAutoCreate(true);
+		break;
+	}
+}
+
+//--------------------------------------------------------------
+float CharacterAlien::getCtrlPos(SkeletonHandler& SkeletonHandler)
+{
+	float CtrlPos_ = -1;
+
+	switch(_eHandState)
+	{
+	case eNO_LOCKON:
+		{
+			ofVec2f LeftHand_ = SkeletonHandler.getJoints(_JointType::JointType_HandLeft);
+			ofVec2f RightHand_ = SkeletonHandler.getJoints(_JointType::JointType_HandRight);
+
+			ofVec2f Shoulder_ = SkeletonHandler.getJoints(_JointType::JointType_SpineShoulder);
+
+			if(RightHand_.y < Shoulder_.y)
+			{
+				_eHandState = eRIGHT_LOCKON;
+			}
+			else if(LeftHand_.y < Shoulder_.y)
+			{
+				_eHandState = eLEFT_LOCKON;
+			}
+		}
+		break;
+	case eLEFT_LOCKON:
+		{
+			ofVec2f LeftHand_ = SkeletonHandler.getJoints(_JointType::JointType_HandLeft);
+			ofVec2f ShoulderLeft_ = SkeletonHandler.getJoints(_JointType::JointType_ShoulderLeft);
+			ofVec2f ShoulderRight_ = SkeletonHandler.getJoints(_JointType::JointType_ShoulderRight);
+
+			float fMin_ = ShoulderLeft_ .x - abs(ShoulderLeft_.x - ShoulderRight_.x);
+			float fMax_ = ShoulderRight_.x;
+			CtrlPos_ = ofMap(LeftHand_.x, fMin_, fMax_, 0, cWINDOW_WIDTH);
+
+			if(LeftHand_.y > ShoulderLeft_.y || LeftHand_.y > ShoulderRight_.y)
+			{
+				_eHandState = eNO_LOCKON;
+			}
+		}
+		break;
+	case eRIGHT_LOCKON:
+		{
+			ofVec2f RightHand_ = SkeletonHandler.getJoints(_JointType::JointType_HandRight);
+			ofVec2f ShoulderLeft_ = SkeletonHandler.getJoints(_JointType::JointType_ShoulderLeft);
+			ofVec2f ShoulderRight_ = SkeletonHandler.getJoints(_JointType::JointType_ShoulderRight);
+
+			float fMin_ = ShoulderLeft_ .x;
+			float fMax_ = ShoulderRight_.x + abs(ShoulderLeft_.x - ShoulderRight_.x);
+			CtrlPos_ = ofMap(RightHand_.x, fMin_, fMax_, 0, cWINDOW_WIDTH);
+			
+			if(RightHand_.y > ShoulderLeft_.y || RightHand_.y > ShoulderRight_.y)
+			{
+				_eHandState = eNO_LOCKON;
+			}
+		}
+		break;
+	}
+	return CtrlPos_;
+}
+#pragma endregion
 
 #pragma region Character object update
 //--------------------------------------------------------------
@@ -29,16 +124,28 @@ void CharacterAlien::updateCharacterObj(CharacterObj& Obj, SkeletonHandler& Skel
 //--------------------------------------------------------------
 void CharacterAlien::setupTeaching()
 {
+	_iAlienCounter = cALIEN_TEACHING_STEPS;
+	this->addTeachingAlien();
 }
 
 //--------------------------------------------------------------
 void CharacterAlien::updateTeaching(float fDelta, SkeletonHandler& SkeletonHandler)
 {
+	float fCtrlX_ = this->getCtrlPos(SkeletonHandler);
+	_AlienCatcher.update(fDelta, fCtrlX_);
 }
 
 //--------------------------------------------------------------
 void CharacterAlien::drawTeaching()
 {
+	ofPushStyle();
+	{
+		ofSetColor(255, 0, 0);
+		ofCircle(100, 100, 50);
+
+		_AlienCatcher.draw();
+	}
+	ofPopStyle();
 }
 #pragma endregion
 
@@ -51,10 +158,24 @@ void CharacterAlien::setupGaming()
 //--------------------------------------------------------------
 void CharacterAlien::updateGaming(float fDelta, SkeletonHandler& SkeletonHandler)
 {
+	if(!SkeletonHandler.getHaveUser())
+	{
+		return;
+	}
+	float fCtrlX_ = this->getCtrlPos(SkeletonHandler);
+	_AlienCatcher.update(fDelta, fCtrlX_);
 }
 
 //--------------------------------------------------------------
 void CharacterAlien::drawGaming()
 {
+	ofPushStyle();
+	{
+		ofSetColor(0, 255, 0);
+		ofCircle(100, 100, 50);
+
+		_AlienCatcher.draw();
+	}
+	ofPopStyle();
 }
 #pragma endregion

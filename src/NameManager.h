@@ -19,7 +19,6 @@ namespace NAME_MGR
 	
 	//Alien
 	CREATE_VALUE(C_Alien_Head);
-	CREATE_VALUE(C_Alien_UFO);
 
 	//Angel
 	CREATE_VALUE(C_Angel_Ring);

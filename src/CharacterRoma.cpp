@@ -22,11 +22,11 @@ void CharacterRoma::setupCharacter()
 	_ArrowShooter.setup();
 	ofAddListener(stArrowPoint::ArrowEvent, this, &CharacterRoma::onArrowHit);
 
-	//Teaching
-	this->setupTeaching();
-	
-	//Gaming
-	this->setupGaming();
+	////Teaching
+	//this->setupTeaching();
+	//
+	////Gaming
+	//this->setupGaming();
 
 	_bIsSetup = true;
 }
