@@ -22,15 +22,14 @@ void CharacterRoma::setupCharacter()
 	_ArrowShooter.setup();
 	ofAddListener(stArrowPoint::ArrowEvent, this, &CharacterRoma::onArrowHit);
 
-	////Teaching
-	//this->setupTeaching();
-	//
-	////Gaming
-	//this->setupGaming();
-
 	_bIsSetup = true;
 }
 
+//--------------------------------------------------------------
+void CharacterRoma::reset()
+{
+	_ArrowShooter.clear();
+}
 #pragma region Arrow Shooter
 //--------------------------------------------------------------
 void CharacterRoma::onArrowHit(bool& bDefence)
@@ -117,6 +116,10 @@ void CharacterRoma::updateTeaching(float fDelta, SkeletonHandler& SkeletonHandle
 		_ArrowShooter.clear();
 		_eState = eCHARACTER_GAMING;
 		_ArrowShooter.setAutoShoot(true);
+
+		//Event
+		pair<string, string> Event_ = make_pair(NAME_MGR::EVENT_TeachingFinish, ofToString(eCHARACTER_ROMA));
+		ofNotifyEvent(IBaseCharacter::CharacterEvent, Event_);
 	}
 
 	//Shooter

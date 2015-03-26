@@ -15,6 +15,7 @@ class CharacterAlien : public IBaseCharacter
 {
 public:
 	virtual void setupCharacter() override;
+	virtual void reset() override;
 
 //----------------------------------
 //Alien Catcher

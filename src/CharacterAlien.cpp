@@ -15,6 +15,13 @@ void CharacterAlien::setupCharacter()
 	_bIsSetup = true;
 }
 
+//--------------------------------------------------------------
+void CharacterAlien::reset()
+{
+	_eHandState = eNO_LOCKON;
+	_AlienCatcher.clear();
+}
+
 #pragma region Alien Cathcer
 //--------------------------------------------------------------
 void CharacterAlien::onLastAlien(string& e)
@@ -42,6 +49,11 @@ void CharacterAlien::addTeachingAlien()
 		//Finish Teaching
 		_eState = eCHARACTER_GAMING;
 		_AlienCatcher.setAutoCreate(true);
+
+		//Event
+		pair<string, string> Event_ = make_pair(NAME_MGR::EVENT_TeachingFinish, ofToString(eCHARACTER_ALIEN));
+		ofNotifyEvent(IBaseCharacter::CharacterEvent, Event_);
+
 		break;
 	}
 }

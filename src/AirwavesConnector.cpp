@@ -20,25 +20,29 @@ void AirwavesConnector::updateConnector()
 	
 	_udpReciver.Receive(udpCmd_, cCMD_LENGTH);
 	string strCmd_ = udpCmd_;
-
+	eCONNECTOR_CMD eCmd_ = eD2P_CMD;
+	string strValue_ = "";
 	if(strCmd_ != "")
 	{
 		int iStart_ = strCmd_.find(cSTART_TEX);
+		int iValue_ = strCmd_.find(cVALUE_TEX);
 		int iEnd_ = strCmd_.find(cEND_TEX);
-		
+
 		if(iStart_ == string::npos || iEnd_ == string::npos)
 		{
 			return;
 		}
 
 		try{
-			strCmd_ = strCmd_.substr(iStart_+1, iEnd_ - iStart_ - 1);
+			eCmd_ = static_cast<eCONNECTOR_CMD>(ofToInt(strCmd_.substr(iStart_+1, iValue_ - iStart_ - 1)));
+			strValue_ = strCmd_.substr(iValue_+1, iEnd_ - iValue_ - 1);
+
 		}catch( const exception &e)
 		{
 			ofLog(OF_LOG_ERROR, e.what());
 		}
-
-		ofNotifyEvent(AirwavesConnectorEvent, strCmd_, this);
+		pair<eCONNECTOR_CMD, string> e_ = make_pair(eCmd_, strValue_);
+		ofNotifyEvent(AirwavesConnectorEvent, e_, this);
 	}
 }
 

@@ -15,9 +15,11 @@ void ProjectorView::setup()
 		getchar();
 		std::exit(1);
 	}
+	_Kinect.startThread();
 
 	//Character
 	_CharacterMgr.setupCharacterMgr();
+	_eCharacterType = eCHARACTER_NUM;
 	ofAddListener(IBaseCharacter::CharacterEvent, this, &ProjectorView::onCharacterEvent);
 
 	//Connector
@@ -73,9 +75,6 @@ void ProjectorView::exit()
 //--------------------------------------------------------------
 void ProjectorView::keyPressed(int key)
 {
-	ofPoint StartPos_ = _SkeletonHandler.getStartPos();
-	float fScale_ = _SkeletonHandler.getScale();
-
 	switch(key)
 	{
 	//Character
@@ -85,6 +84,7 @@ void ProjectorView::keyPressed(int key)
 			{
 				return;
 			}
+			_CharacterMgr.stop();
 			_CharacterMgr.setCharacter(eCHARACTER_ROMA, _SkeletonHandler.getBodySize());
 			_CharacterMgr.play();
 		}
@@ -95,6 +95,7 @@ void ProjectorView::keyPressed(int key)
 			{
 				return;
 			}
+			_CharacterMgr.stop();
 			_CharacterMgr.setCharacter(eCHARACTER_ALIEN, _SkeletonHandler.getBodySize());
 			_CharacterMgr.play();
 		}
@@ -105,18 +106,24 @@ void ProjectorView::keyPressed(int key)
 			{
 				return;
 			}
+			_CharacterMgr.stop();
 			_CharacterMgr.setCharacter(eCHARACTER_ANGEL, _SkeletonHandler.getBodySize());
 			_CharacterMgr.play();
 		}
 		break;
-	case '4':
+	//case '4':
+	//	{
+	//		if(!_bHaveUser)
+	//		{
+	//			return;
+	//		}
+	//		_CharacterMgr.setCharacter(eCHARACTER_MONEY, _SkeletonHandler.getBodySize());
+	//		_CharacterMgr.play();
+	//	}
+	//	break;
+	case 'r':
 		{
-			if(!_bHaveUser)
-			{
-				return;
-			}
-			_CharacterMgr.setCharacter(eCHARACTER_MONEY, _SkeletonHandler.getBodySize());
-			_CharacterMgr.play();
+			_CharacterMgr.stop();
 		}
 		break;
 	//Kinect ctrl
@@ -132,40 +139,10 @@ void ProjectorView::keyPressed(int key)
 			}
 			break;
 		}
-	//case 's':
-	//	{
-	//		this->saveConfig();
-	//		break;
-	//	}
-	////Translate
-	//case OF_KEY_UP:
-	//	StartPos_.set(StartPos_.x, StartPos_.y - 1);
-	//	_SkeletonHandler.setStartPos(StartPos_);
-	//	break;
-	//case OF_KEY_DOWN:
-	//	StartPos_.set(StartPos_.x, StartPos_.y + 1);
-	//	_SkeletonHandler.setStartPos(StartPos_);
-	//	break;
-	//case OF_KEY_LEFT:
-	//	StartPos_.set(StartPos_.x - 1, StartPos_.y);
-	//	_SkeletonHandler.setStartPos(StartPos_);
-	//	break;
-	//case OF_KEY_RIGHT:
-	//	StartPos_.set(StartPos_.x + 1, StartPos_.y);
-	//	_SkeletonHandler.setStartPos(StartPos_);
-	//	break;
-
-	////Scale
-	//case '1':
-	//	if( (fScale_ - 0.05) >= .0)
-	//	{
-	//		_SkeletonHandler.setScale(fScale_ - 0.05);
-	//	}
-	//	break;
-	//case '2':
-	//	_SkeletonHandler.setScale(fScale_ + 0.05);
-	//	break;
 	}
+
+	//Kinect setting (only work on debug mode)
+	this->settingKinect(key);
 }
 
 #pragma region Kinect
@@ -222,21 +199,107 @@ void ProjectorView::stopKinect()
 		_bHaveUser = false;
 	}
 }
+
+//--------------------------------------------------------------
+void ProjectorView::settingKinect(int key)
+{
+#ifdef _DEBUG
+	ofPoint StartPos_ = _SkeletonHandler.getStartPos();
+	float fScale_ = _SkeletonHandler.getScale();
+	switch(key)
+	{
+	case 's':
+		{
+			this->saveConfig();
+			break;
+		}
+	//Translate
+	case OF_KEY_UP:
+		StartPos_.set(StartPos_.x, StartPos_.y - 1);
+		_SkeletonHandler.setStartPos(StartPos_);
+		break;
+	case OF_KEY_DOWN:
+		StartPos_.set(StartPos_.x, StartPos_.y + 1);
+		_SkeletonHandler.setStartPos(StartPos_);
+		break;
+	case OF_KEY_LEFT:
+		StartPos_.set(StartPos_.x - 1, StartPos_.y);
+		_SkeletonHandler.setStartPos(StartPos_);
+		break;
+	case OF_KEY_RIGHT:
+		StartPos_.set(StartPos_.x + 1, StartPos_.y);
+		_SkeletonHandler.setStartPos(StartPos_);
+		break;
+
+	//Scale
+	case '[':
+		if( (fScale_ - 0.05) >= .0)
+		{
+			_SkeletonHandler.setScale(fScale_ - 0.05);
+		}
+		break;
+	case ']':
+		_SkeletonHandler.setScale(fScale_ + 0.05);
+		break;
+	}
+#endif //_DEBUG
+}
 #pragma endregion
 
 #pragma region Character
 //--------------------------------------------------------------
-void ProjectorView::onCharacterEvent(string& e)
+void ProjectorView::onCharacterEvent(pair<string, string>& e)
 {
-	cout<<e<<endl;
+	if(e.first == NAME_MGR::EVENT_TeachingFinish)
+	{
+		_Connector.sendCMD(eCONNECTOR_CMD::eP2D_TEACHING_END, e.second);
+	}
 }
 #pragma endregion
 
 #pragma region Connector
 //--------------------------------------------------------------
-void ProjectorView::onConnectorEvent(string& e)
+void ProjectorView::onConnectorEvent(pair<eCONNECTOR_CMD, string>& e)
 {
-	cout<<e<<endl;
+	switch(e.first)
+	{
+	case eD2P_SET_CHARACTOR:
+		{	
+			eCHARACTER_TYPE eType_ = (eCHARACTER_TYPE)ofToInt(e.second);
+
+			if(eType_ < eCHARACTER_ANGEL || eType_ >= eCHARACTER_NUM)
+			{
+				ofLog(OF_LOG_WARNING, "Unkown character type : " + ofToString(eType_));
+				_eCharacterType = eCHARACTER_ROMA; //default
+			}
+			else
+			{
+				_eCharacterType = eType_;
+			}
+			_CharacterMgr.stop();
+			if(!_SkeletonHandler.getHaveUser())
+			{
+				ofLog(OF_LOG_WARNING, "Using default body size");
+				_CharacterMgr.setCharacter(_eCharacterType, cDEFAULT_BODY_SIZE);
+			}
+			else
+			{
+				_CharacterMgr.setCharacter(_eCharacterType, _SkeletonHandler.getBodySize());
+			}
+			_CharacterMgr.play();
+		}
+		break;
+	case eD2P_GAME_TIMEOUT:
+		{
+			_CharacterMgr.stop();
+		}
+		break;
+	default :
+		{
+			ofLog(OF_LOG_WARNING, "Unkown protocol : " + ofToString(e.first));
+		}
+		break;
+	}
 }
 #pragma endregion
 

@@ -17,17 +17,20 @@ void CharacterAngel::setupCharacter()
 	_HeartManager.setup();
 	ofAddListener(_HeartManager.HeartEvent, this, &CharacterAngel::onHeartHit);
 
-	////Teaching
-	//this->setupTeaching();
-
-	////Gaming
-	//this->setupGaming();
-
 	_eHandState = eBOTH_HAND_WAIT;
 	_GestureCounter = 0;
 	fHeartTimer_ = 0.0;
-	TeachingCounter_ = 0;
 	_bIsSetup = true;
+}
+
+//--------------------------------------------------------------
+void CharacterAngel::reset()
+{
+	_eHandState = eBOTH_HAND_WAIT;
+	_GestureCounter = 0;
+	fHeartTimer_ = 0.0;
+
+	_HeartManager.clear();
 }
 
 #pragma region Heart Manager
@@ -36,7 +39,12 @@ void CharacterAngel::onHeartHit(string& e)
 {
 	if(_eState == eCHARACTER_TEACHING)
 	{
-		TeachingCounter_--;
+		bStartTeaching_ = false;
+		_eState = eCHARACTER_GAMING;
+
+		//Event
+		pair<string, string> Event_ = make_pair(NAME_MGR::EVENT_TeachingFinish, ofToString(eCHARACTER_ANGEL));
+		ofNotifyEvent(IBaseCharacter::CharacterEvent, Event_);
 	}
 }
 
@@ -166,16 +174,7 @@ void CharacterAngel::updateTeaching(float fDelta, SkeletonHandler& SkeletonHandl
 		if(fTeachingTimer_ < 0.0)
 		{
 			this->addFloatingHeart(cTEACHING_FLOATING_NUM);
-			TeachingCounter_ = cTEACHING_FLOATING_NUM;
 			bStartTeaching_ = true;
-		}
-	}
-	else
-	{
-		if(TeachingCounter_ == 0)
-		{
-			bStartTeaching_ = false;
-			_eState = eCHARACTER_GAMING;
 		}
 	}
 }

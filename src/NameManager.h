@@ -27,7 +27,7 @@ namespace NAME_MGR
 //---------------------------------------
 // Character Event
 //---------------------------------------
-	CREATE_VALUE(EVENT_TeachingFinsih);
+	CREATE_VALUE(EVENT_TeachingFinish);
 };
 
 #endif // !AIRWAVES_PROJECTOR_NAMEMANAGER

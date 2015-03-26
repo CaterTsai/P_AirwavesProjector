@@ -15,7 +15,7 @@ class CharacterAngel : public IBaseCharacter
 {
 public:
 	virtual void setupCharacter() override;
-
+	virtual void reset() override;
 private:
 	float fHeartTimer_;
 //----------------------------------
@@ -47,7 +47,6 @@ private:
 
 private:
 	bool bStartTeaching_;
-	int TeachingCounter_;
 	float fTeachingTimer_;
 
 //----------------------------------

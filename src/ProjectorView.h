@@ -33,7 +33,7 @@ public:
 
 	void startKinect();
 	void stopKinect();
-
+	void settingKinect(int key);
 private:
 	bool				_bHaveUser;
 	stSCREEN_SKELETON	_Skeleton;
@@ -45,16 +45,16 @@ private:
 //Character
 //-------------------------------------------------
 public:
-	void onCharacterEvent(string& e);
+	void onCharacterEvent(pair<string, string>& e);
 private:
 	CharacterMgr	_CharacterMgr;
-
+	eCHARACTER_TYPE	_eCharacterType;
 
 //-------------------------------------------------
 //Connector
 //-------------------------------------------------
 public:
-	void onConnectorEvent(string& e);
+	void onConnectorEvent(pair<eCONNECTOR_CMD, string>& e);
 private:
 	AirwavesConnector	_Connector;
 

@@ -17,7 +17,7 @@ public:
 	void initConnector(string strIP, int iPort, int MyPort);
 	void updateConnector();
 	void closeConnector();
-	void sendCMD(eCONNECTOR_CMD eCMD, string strValue);
+	void sendCMD(eCONNECTOR_CMD eCMD, string strValue = "");
 
 private:
 	ofxUDPManager	_udpReciver, _udpSender;
@@ -26,7 +26,7 @@ private:
 //Event
 //-------------------------------
 public:
-	ofEvent<string>	AirwavesConnectorEvent;
+	ofEvent<pair<eCONNECTOR_CMD, string>>	AirwavesConnectorEvent;
 };
 
 #endif // !AIRWAVES_CONNECTOR

@@ -8,7 +8,7 @@ class CharacterRoma : public IBaseCharacter
 {
 public:
 	virtual void setupCharacter() override;
-	
+	virtual void reset() override;
 //----------------------------------
 //Arrow Shooter
 //----------------------------------
@@ -44,7 +44,6 @@ private:
 	virtual void setupGaming();
 	virtual void updateGaming(float fDelta, SkeletonHandler& SkeletonHandler) override;
 	virtual void drawGaming() override;
-
 };
 
 #endif // !AIRWAVE_PROJECTOR_ROMA

@@ -64,9 +64,10 @@ public:
 	virtual void teachingTimeout(){};
 
 public:
-	static	ofEvent<string>	CharacterEvent;
+	static	ofEvent<pair<string, string>>	CharacterEvent;
 
 protected:
+	virtual void reset(){};
 	virtual void updateCharacterObj(CharacterObj& Obj, SkeletonHandler& SkeletonHandler){};
 
 	virtual void setupTeaching(){};

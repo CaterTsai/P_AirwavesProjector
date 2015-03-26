@@ -6,6 +6,8 @@
 const int cWINDOW_WIDTH = 1215;
 const int cWINDOW_HEIGHT = 1024;
 
+const float cDEFAULT_BODY_SIZE = 710;
+
 typedef enum eCHARACTER_TYPE
 {
 	eCHARACTER_ANGEL = 0,

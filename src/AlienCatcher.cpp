@@ -172,6 +172,21 @@ void AlienCatcher::draw()
 }
 
 //--------------------------------------------------------------
+void AlienCatcher::clear()
+{
+	//clear alien
+	_iNowIntervalID = this->getIntervalID(cWINDOW_WIDTH/2.0);
+	_AnimUFOPosX.reset(_PositionList[_iNowIntervalID] + _IntervalSizeHalf);
+	_AlienList.clear();
+	_bStartAuto = false;
+	_fCreateTimer = 5.0;
+
+	//Reset order
+	_iAlienCounter = 0;
+	random_shuffle(_IntervalCreateOrder.begin(), _IntervalCreateOrder.end());
+}
+
+//--------------------------------------------------------------
 void AlienCatcher::addAlien(float fPosX)
 {	
 	stAlienPoint	NewAlien_(ofVec2f(fPosX, cWINDOW_HEIGHT));

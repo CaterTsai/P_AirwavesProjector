@@ -44,6 +44,8 @@ void CharacterObj::draw()
 //--------------------------------------------------------------
 void CharacterObj::setSizebyBody(float fBody)
 {
+	_ScaleAnchor.set(_anchor);
+	
 	_fScaleHeight = _fBodyScale * fBody;
 	float fScale_ = (_fScaleHeight / _obj.getHeight());
 	
@@ -57,7 +59,7 @@ void CharacterObj::setSizebyBody(float fBody)
 
 
 #pragma region IBaseCharacter
-ofEvent<string> IBaseCharacter::CharacterEvent = ofEvent<string>();
+ofEvent<pair<string, string>> IBaseCharacter::CharacterEvent = ofEvent<pair<string, string>>();
 
 //--------------------------------------------------------------
 void IBaseCharacter::updateCharacter(float fDelta, SkeletonHandler& SkeletonHandler)
@@ -131,6 +133,9 @@ void IBaseCharacter::play()
 void IBaseCharacter::stop()
 {
 	_eState = eCHARACTER_WAIT;
+	this->reset();
+
+
 }
 
 //--------------------------------------------------------------

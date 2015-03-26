@@ -58,6 +58,7 @@ public:
 	void setup();
 	void update(float fDelta, float PosX = -1);
 	void draw();
+	void clear();
 
 	void addAlien(float fPoxX);
 	void addAlien();

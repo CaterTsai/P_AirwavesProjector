@@ -129,6 +129,13 @@ void HeartManager::update(float fDelta)
 		if(FloatIter_->eState == eHEART_CAN_REMOVE)
 		{
 			FloatIter_ = _FloatingHeartList.erase(FloatIter_);
+
+			if(_FloatingHeartList.size() == 0)
+			{
+				//lastone event
+				string strHit_ = "last hit";
+				ofNotifyEvent(HeartEvent, strHit_, this);
+			}
 		}
 		else
 		{
@@ -157,10 +164,6 @@ void HeartManager::update(float fDelta)
 			FloatIter_.eState = eHEART_TOUCHING;
 			FloatIter_.AnimTouch.animateFromTo(1.0, 0.0);
 			FloatIter_.AnimBigHeart.animateToAfterDelay(1.0, 0.1);
-
-			//Event!!
-			string strHit_ = "Hit";
-			ofNotifyEvent(HeartEvent, strHit_, this);
 		}
 	}
 }
@@ -171,8 +174,6 @@ void HeartManager::draw()
 	ofPushStyle();
 	
 	ofSetColor(255);
-	
-
 	//Fly Heart
 	ofEnableBlendMode(ofBlendMode::OF_BLENDMODE_ADD);
 	for(auto& Iter_ : _FlyingHeartList)
