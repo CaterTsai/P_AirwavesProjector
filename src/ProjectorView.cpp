@@ -254,6 +254,10 @@ void ProjectorView::onCharacterEvent(pair<string, string>& e)
 	{
 		_Connector.sendCMD(eCONNECTOR_CMD::eP2D_TEACHING_END, e.second);
 	}
+	else if(e.first == NAME_MGR::EVENT_TakePicture)
+	{
+		_Connector.sendCMD(eCONNECTOR_CMD::eP2D_TAKE_PICTURE, e.second);
+	}
 }
 #pragma endregion
 

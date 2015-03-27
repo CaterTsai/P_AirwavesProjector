@@ -41,6 +41,10 @@ void CharacterRoma::onArrowHit(bool& bDefence)
 			if(bDefence)
 			{
 				_TeachingIndex++;
+
+				//TEST
+				pair<string, string> Event_ = make_pair(NAME_MGR::EVENT_TakePicture, "");
+				ofNotifyEvent(IBaseCharacter::CharacterEvent, Event_);
 			}
 		}
 		break;

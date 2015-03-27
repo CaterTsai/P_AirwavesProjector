@@ -11,6 +11,7 @@ typedef enum eCONNECTOR_CMD
 
 	//Projector to Display
 	,eP2D_CMD			=	200
+	,eP2D_TAKE_PICTURE
 	,eP2D_TEACHING_END
 	,eP2D_MAX
 };
