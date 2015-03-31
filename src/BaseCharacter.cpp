@@ -57,7 +57,6 @@ void CharacterObj::setSizebyBody(float fBody)
 
 #pragma endregion
 
-
 #pragma region IBaseCharacter
 ofEvent<pair<string, string>> IBaseCharacter::CharacterEvent = ofEvent<pair<string, string>>();
 
@@ -134,8 +133,6 @@ void IBaseCharacter::stop()
 {
 	_eState = eCHARACTER_WAIT;
 	this->reset();
-
-
 }
 
 //--------------------------------------------------------------
@@ -144,6 +141,25 @@ void IBaseCharacter::setScale(float fBody)
 	for(auto& Obj_ : _ObjectList)
 	{
 		Obj_.setSizebyBody(fBody);
+	}
+}
+
+//--------------------------------------------------------------
+void IBaseCharacter::takePicture(float fDelta)
+{
+	//Take picture
+	if(_iPictureCounter < cPICTURE_NUM)
+	{
+		_fPictureTimer -= fDelta;	
+		if(_fPictureTimer > 0.0)
+		{
+			return;
+		}
+
+		pair<string, string> Event_ = make_pair(NAME_MGR::EVENT_TakePicture, "");
+		ofNotifyEvent(IBaseCharacter::CharacterEvent, Event_);
+		_iPictureCounter++;
+		_fPictureTimer = _fPirecureInterval;
 	}
 }
 #pragma endregion

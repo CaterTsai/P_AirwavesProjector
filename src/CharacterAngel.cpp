@@ -139,8 +139,11 @@ void CharacterAngel::updateCharacterObj(CharacterObj& Obj, SkeletonHandler& Skel
 //--------------------------------------------------------------
 void CharacterAngel::setupTeaching()
 {
-	fTeachingTimer_ = 5.0;
+	fTeachingTimer_ = 2.0;
 	bStartTeaching_ = false;
+
+	_iPictureCounter = 0;
+	_fPictureTimer = _fPirecureInterval = cANGEL_PICTURE_INTERVAL;
 }
 
 //--------------------------------------------------------------
@@ -165,6 +168,7 @@ void CharacterAngel::updateTeaching(float fDelta, SkeletonHandler& SkeletonHandl
 		{
 			_HeartManager.addFlying(Body_, Direction_ * cWINDOW_WIDTH, ofRandom(cFLYING_HEART_DURATION.first, cFLYING_HEART_DURATION.second));
 			Direction_.rotate(ofRandom(cFLYING_HEART_DEGREE.first, cFLYING_HEART_DEGREE.second));
+			Direction_.normalize();
 		}
 	}
 	
@@ -177,6 +181,8 @@ void CharacterAngel::updateTeaching(float fDelta, SkeletonHandler& SkeletonHandl
 			bStartTeaching_ = true;
 		}
 	}
+
+	this->takePicture(fDelta);
 }
 
 //--------------------------------------------------------------

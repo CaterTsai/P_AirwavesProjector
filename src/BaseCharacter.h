@@ -50,6 +50,8 @@ public:
 	IBaseCharacter()
 		:_bIsSetup(false)
 		,_bIsDisplay(false)
+		,_iPictureCounter(0)
+		,_fPictureTimer(0.0)
 		,_eState(eCHARACTER_WAIT){}
 
 	virtual void setupCharacter(){};
@@ -73,6 +75,7 @@ protected:
 	virtual void setupTeaching(){};
 	virtual void updateTeaching(float fDelta, SkeletonHandler& SkeletonHandler){};
 	virtual void drawTeaching(){};
+	void takePicture(float fDelta);
 
 	virtual void setupGaming(){};
 	virtual void updateGaming(float fDelta, SkeletonHandler& SkeletonHandler){};
@@ -82,5 +85,8 @@ protected:
 	bool					_bIsSetup, _bIsDisplay;
 	eCHARACTER_STATE		_eState;
 	vector<CharacterObj>	_ObjectList;
+
+	int						_iPictureCounter;
+	float					_fPictureTimer, _fPirecureInterval;
 };
 #endif // !AIRWAVE_PROJECT_BASE_CHARACTER

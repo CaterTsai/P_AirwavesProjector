@@ -30,6 +30,7 @@ void CharacterRoma::reset()
 {
 	_ArrowShooter.clear();
 }
+
 #pragma region Arrow Shooter
 //--------------------------------------------------------------
 void CharacterRoma::onArrowHit(bool& bDefence)
@@ -41,10 +42,6 @@ void CharacterRoma::onArrowHit(bool& bDefence)
 			if(bDefence)
 			{
 				_TeachingIndex++;
-
-				//TEST
-				pair<string, string> Event_ = make_pair(NAME_MGR::EVENT_TakePicture, "");
-				ofNotifyEvent(IBaseCharacter::CharacterEvent, Event_);
 			}
 		}
 		break;
@@ -98,8 +95,10 @@ void CharacterRoma::setupTeaching()
 		_TeachingList.push_back(make_pair(true, eSHOOT_TARGET_TYPE::eSHOOT_MIDDLE));
 		_TeachingList.push_back(make_pair(false, eSHOOT_TARGET_TYPE::eSHOOT_BOTTOM));
 	}
-
 	_TeachingIndex = 0;
+	_iPictureCounter = 0;
+	_fPictureTimer = _fPirecureInterval = cROMA_PICTURE_INTERVAL;
+
 }
 
 //--------------------------------------------------------------
@@ -110,7 +109,6 @@ void CharacterRoma::updateTeaching(float fDelta, SkeletonHandler& SkeletonHandle
 		return;
 	}
 
-	
 	//update arrow shooter
 	_ArrowShooter.update(fDelta, SkeletonHandler);
 
@@ -159,6 +157,9 @@ void CharacterRoma::updateTeaching(float fDelta, SkeletonHandler& SkeletonHandle
 		}
 		_fShootTimer = 3.0;
 	}
+
+	this->takePicture(fDelta);
+
 }
 
 //--------------------------------------------------------------

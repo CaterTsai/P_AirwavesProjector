@@ -36,7 +36,7 @@ private:
 	float										_fShootTimer;
 	vector<pair<bool, eSHOOT_TARGET_TYPE>>		_TeachingList;
 	int											_TeachingIndex;
-
+	
 //----------------------------------
 //Gaming
 //----------------------------------

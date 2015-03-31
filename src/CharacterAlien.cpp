@@ -138,6 +138,9 @@ void CharacterAlien::setupTeaching()
 {
 	_iAlienCounter = cALIEN_TEACHING_STEPS;
 	this->addTeachingAlien();
+
+	_iPictureCounter = 0;
+	_fPictureTimer = _fPirecureInterval = cANGEL_PICTURE_INTERVAL;
 }
 
 //--------------------------------------------------------------
@@ -145,6 +148,8 @@ void CharacterAlien::updateTeaching(float fDelta, SkeletonHandler& SkeletonHandl
 {
 	float fCtrlX_ = this->getCtrlPos(SkeletonHandler);
 	_AlienCatcher.update(fDelta, fCtrlX_);
+
+	this->takePicture(fDelta);
 }
 
 //--------------------------------------------------------------
