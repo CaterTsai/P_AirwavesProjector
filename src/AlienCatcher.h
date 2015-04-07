@@ -3,6 +3,7 @@
 
 #include "constParameter.h"
 #include "ofxAnimatableFloat.h"
+#include "ofxHapPlayer.h"
 
 #pragma region stAlienPoint
 //------------------------------
@@ -69,7 +70,7 @@ public:
 		_bStartAuto = bValue;
 		if(bValue)
 		{
-			_fCreateTimer = 3.0;
+			_fCreateTimer = 1.0;
 		}
 	}
 private:
@@ -91,7 +92,8 @@ private:
 private:
 
 	bool				_bStartAuto;
-	ofImage				_UFO, _Alien;
+	ofVideoPlayer		_UFO;
+	ofImage				_Alien, _UFOLight;
 
 	//Position
 	float				_IntervalSize;

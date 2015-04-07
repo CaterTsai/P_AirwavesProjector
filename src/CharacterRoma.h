@@ -9,6 +9,7 @@ class CharacterRoma : public IBaseCharacter
 public:
 	virtual void setupCharacter() override;
 	virtual void reset() override;
+	virtual void startGame() override;
 //----------------------------------
 //Arrow Shooter
 //----------------------------------

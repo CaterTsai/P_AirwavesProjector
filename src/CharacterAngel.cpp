@@ -4,11 +4,11 @@ void CharacterAngel::setupCharacter()
 {
 	//Wings
 	CharacterObj	WingsObj_;
-	WingsObj_.setup(NAME_MGR::C_Angel_Wings, "Angel/wings.jpg", ofVec2f(350, 127), 0.7);
+	WingsObj_.setup(NAME_MGR::C_Angel_Wings, "Angel/wings.mov", ofVec2f(546, 343), 0.7);
 
 	//Ring
 	CharacterObj	RingObj_;
-	RingObj_.setup(NAME_MGR::C_Angel_Ring, "Angel/ring.jpg", ofVec2f(172, 171), 0.2);
+	RingObj_.setup(NAME_MGR::C_Angel_Ring, "Angel/ring.jpg", ofVec2f(156, 201), 0.2);
 
 	_ObjectList.push_back(WingsObj_);
 	_ObjectList.push_back(RingObj_);
@@ -33,13 +33,22 @@ void CharacterAngel::reset()
 	_HeartManager.clear();
 }
 
+//--------------------------------------------------------------
+void CharacterAngel::startGame()
+{
+	if(_eState == eCHARACTER_GAMING)
+	{
+		_bStartGaming = true;
+	}
+}
+
 #pragma region Heart Manager
 //--------------------------------------------------------------
 void CharacterAngel::onHeartHit(string& e)
 {
 	if(_eState == eCHARACTER_TEACHING)
 	{
-		bStartTeaching_ = false;
+		_bStartTeaching = false;
 		_eState = eCHARACTER_GAMING;
 
 		//Event
@@ -139,8 +148,8 @@ void CharacterAngel::updateCharacterObj(CharacterObj& Obj, SkeletonHandler& Skel
 //--------------------------------------------------------------
 void CharacterAngel::setupTeaching()
 {
-	fTeachingTimer_ = 2.0;
-	bStartTeaching_ = false;
+	_fTeachingTimer = 1.0;
+	_bStartTeaching = false;
 
 	_iPictureCounter = 0;
 	_fPictureTimer = _fPirecureInterval = cANGEL_PICTURE_INTERVAL;
@@ -172,13 +181,13 @@ void CharacterAngel::updateTeaching(float fDelta, SkeletonHandler& SkeletonHandl
 		}
 	}
 	
-	if(!bStartTeaching_)
+	if(!_bStartTeaching)
 	{
-		fTeachingTimer_ -= fDelta;
-		if(fTeachingTimer_ < 0.0)
+		_fTeachingTimer -= fDelta;
+		if(_fTeachingTimer < 0.0)
 		{
 			this->addFloatingHeart(cTEACHING_FLOATING_NUM);
-			bStartTeaching_ = true;
+			_bStartTeaching = true;
 		}
 	}
 
@@ -204,7 +213,8 @@ void CharacterAngel::drawTeaching()
 //--------------------------------------------------------------
 void CharacterAngel::setupGaming()
 {
-	fGameFloatTimer_ = 2.0;
+	_fGameFloatTimer = 1.0;
+	_bStartGaming = false;
 }
 
 //--------------------------------------------------------------
@@ -232,10 +242,14 @@ void CharacterAngel::updateGaming(float fDelta, SkeletonHandler& SkeletonHandler
 	}
 
 	//Auto shoot floating heart
-	fGameFloatTimer_ -= fDelta;
-	if(fGameFloatTimer_ <= 0.0)
+	if(!_bStartGaming)
+	{
+		return;
+	}
+	_fGameFloatTimer -= fDelta;
+	if(_fGameFloatTimer <= 0.0)
 	{	
-		fGameFloatTimer_ = ofRandom(cFLOATING_HEART_TIME.first, cFLOATING_HEART_TIME.second);
+		_fGameFloatTimer = ofRandom(cFLOATING_HEART_TIME.first, cFLOATING_HEART_TIME.second);
 		if(_HeartManager.getFloatingNum() < cMAX_FLOATING_HEART)
 		{
 			this->addFloatingHeart(cGAMING_FLOATING_NUM);

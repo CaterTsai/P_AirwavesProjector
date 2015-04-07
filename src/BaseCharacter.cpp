@@ -5,7 +5,9 @@
 void CharacterObj::setup(string strName, string Filename, ofVec2f anchor, float fBodyScale)
 {
 	_Name = strName;
-	_obj.loadImage(Filename);
+	_obj.setPlayer(ofPtr<ofxHapPlayer>(new ofxHapPlayer));
+	_obj.setLoopState(ofLoopType::OF_LOOP_NORMAL);
+	_obj.loadMovie(Filename);
 	_anchor.set(anchor);
 	_fBodyScale = fBodyScale;
 
@@ -19,6 +21,7 @@ void CharacterObj::setup(string strName, string Filename, ofVec2f anchor, float 
 //--------------------------------------------------------------
 void CharacterObj::update(ofPoint DrawPos, float fRotate)
 {
+	_obj.update();
 	_DrawPos.set(DrawPos);
 	_fRotate = fRotate;
 }
@@ -31,7 +34,7 @@ void CharacterObj::draw()
 	{
 		ofSetColor(255);
 		ofDisableBlendMode();
-		ofEnableBlendMode(ofBlendMode::OF_BLENDMODE_ADD);
+		ofEnableBlendMode(ofBlendMode::OF_BLENDMODE_SCREEN);
 
 		ofTranslate(_DrawPos);
 		ofRotateZ(-_fRotate);
@@ -55,6 +58,20 @@ void CharacterObj::setSizebyBody(float fBody)
 	_ScaleAnchor.y = _ScaleAnchor.y * fScale_;
 }
 
+//--------------------------------------------------------------
+void CharacterObj::start()
+{
+	if(_obj.isLoaded())
+	{
+		_obj.play();
+	}
+}
+
+//--------------------------------------------------------------
+void CharacterObj::stop()
+{
+	_obj.stop();
+}
 #pragma endregion
 
 #pragma region IBaseCharacter
@@ -124,6 +141,11 @@ void IBaseCharacter::play()
 	}
 	_eState = eCHARACTER_TEACHING;
 
+	for(auto& Iter_ : _ObjectList)
+	{
+		Iter_.start();
+	}
+
 	this->setupTeaching();
 	this->setupGaming();
 }
@@ -132,6 +154,12 @@ void IBaseCharacter::play()
 void IBaseCharacter::stop()
 {
 	_eState = eCHARACTER_WAIT;
+
+	for(auto& Iter_ : _ObjectList)
+	{
+		Iter_.stop();
+	}
+
 	this->reset();
 }
 

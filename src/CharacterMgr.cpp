@@ -96,3 +96,9 @@ void CharacterMgr::timeoutTeachingMode()
 {
 	_NowCharacter->second->teachingTimeout();
 }
+
+//--------------------------------------------------------------
+void CharacterMgr::startGaming()
+{
+	_NowCharacter->second->startGame();
+}

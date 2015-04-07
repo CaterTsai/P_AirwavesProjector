@@ -4,15 +4,15 @@ void CharacterRoma::setupCharacter()
 {
 	//Hat
 	CharacterObj	HatObj_;
-	HatObj_.setup(NAME_MGR::C_Roma_Hat, "Roma/hat.jpg", ofVec2f(170, 340), 0.8);
+	HatObj_.setup(NAME_MGR::C_Roma_Hat, "Roma/hat.mov", ofVec2f(150, 400), 1.0);
 
 	//Shield
 	CharacterObj	ShieldObj_;
-	ShieldObj_.setup(NAME_MGR::C_Roma_Shield, "Roma/shield.jpg", ofVec2f(65, 170), 0.5);
+	ShieldObj_.setup(NAME_MGR::C_Roma_Shield, "Roma/shield.mov", ofVec2f(60, 197), 0.8);
 
 	//Spear
 	CharacterObj	SpearObj_;
-	SpearObj_.setup(NAME_MGR::C_Roma_Spear, "Roma/spear.jpg", ofVec2f(65, 290), 1.5);
+	SpearObj_.setup(NAME_MGR::C_Roma_Spear, "Roma/spear.mov", ofVec2f(94, 305), 1.5);
 
 	_ObjectList.push_back(HatObj_);
 	_ObjectList.push_back(ShieldObj_);
@@ -29,6 +29,15 @@ void CharacterRoma::setupCharacter()
 void CharacterRoma::reset()
 {
 	_ArrowShooter.clear();
+}
+
+//--------------------------------------------------------------
+void CharacterRoma::startGame()
+{
+	if(_eState == eCHARACTER_GAMING)
+	{
+		_ArrowShooter.setAutoShoot(true);
+	}
 }
 
 #pragma region Arrow Shooter
@@ -117,7 +126,6 @@ void CharacterRoma::updateTeaching(float fDelta, SkeletonHandler& SkeletonHandle
 		//Teaching clear!!
 		_ArrowShooter.clear();
 		_eState = eCHARACTER_GAMING;
-		_ArrowShooter.setAutoShoot(true);
 
 		//Event
 		pair<string, string> Event_ = make_pair(NAME_MGR::EVENT_TeachingFinish, ofToString(eCHARACTER_ROMA));

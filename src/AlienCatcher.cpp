@@ -16,7 +16,7 @@ void stAlienPoint::update(float fDelta, float UFOPosX, float fScaleLimit, float 
 			{
 				eState = eALIEN_FLY;
 				AnimUp.animateFromTo(0, 1);
-				AnimScale.animateFromTo(fScale, fScale*0.7);
+				AnimScale.animateFromTo(fScale, fScale*0.5);
 			}
 		}
 		break;
@@ -54,9 +54,15 @@ void stAlienPoint::update(float fDelta, float UFOPosX, float fScaleLimit, float 
 //@CLASS AlienCathcer
 void AlienCatcher::setup()
 {
-	//Load Image
-	_UFO.loadImage("Alien/UFO_pusheen.png");
-	_Alien.loadImage("Alien/Alien_pusheen.png");
+	//Load Video and images
+	_UFO.setPlayer(ofPtr<ofxHapPlayer>(new ofxHapPlayer));
+	_UFO.setLoopState(ofLoopType::OF_LOOP_NORMAL);
+	_UFO.loadMovie("Alien/UFO.mov");
+	_UFO.play();
+
+	_Alien.loadImage("Alien/Alien.png");
+
+	_UFOLight.loadImage("Alien/UFO_light.png");
 
 	//Position
 	_IntervalSize = (float)cWINDOW_WIDTH/cALIEN_INTERVAL_NUM;
@@ -82,6 +88,7 @@ void AlienCatcher::setup()
 //--------------------------------------------------------------
 void AlienCatcher::update(float fDelta, float PosX)
 {
+	_UFO.update();
 	_AnimUFOPosX.update(fDelta);
 	float fUFOPosX_ = _AnimUFOPosX.getCurrentValue();
 
@@ -132,7 +139,11 @@ void AlienCatcher::update(float fDelta, float PosX)
 	if(_fCreateTimer <= 0.0)
 	{
 		_fCreateTimer = ofRandom(cALIEN_CREATE_DURATION.first, cALIEN_CREATE_DURATION.second);
-		this->addAlien();
+		if(_AlienList.size() < cALIEN_MAX_NUM)
+		{
+			this->addAlien();
+		}
+		
 	}
 	
 }
@@ -159,15 +170,27 @@ void AlienCatcher::draw()
 		}
 		ofPopMatrix();
 	}
+	
+	//UFO Light
+	ofSetColor(255);
+	ofVec2f UFOPos_(_AnimUFOPosX.getCurrentValue(), 0);
+	_UFOLight.draw(UFOPos_.x - _UFOLight.width/2, 100);
+	
+	ofDisableBlendMode();
 
 	//UFO
+	ofEnableBlendMode(OF_BLENDMODE_SCREEN);
 	ofSetColor(255);
 	ofPushMatrix();
 	{	
-		ofTranslate(ofVec2f(_AnimUFOPosX.getCurrentValue(), 0));
+		ofTranslate(UFOPos_);
 		_UFO.draw(-_UFO.width/2, 0);
 	}
 	ofPopMatrix();
+	ofDisableBlendMode();
+
+	
+
 	ofPopStyle();
 }
 

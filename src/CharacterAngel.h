@@ -16,6 +16,7 @@ class CharacterAngel : public IBaseCharacter
 public:
 	virtual void setupCharacter() override;
 	virtual void reset() override;
+	virtual void startGame() override;
 private:
 	float fHeartTimer_;
 //----------------------------------
@@ -46,8 +47,8 @@ private:
 	virtual void drawTeaching() override;
 
 private:
-	bool bStartTeaching_;
-	float fTeachingTimer_;
+	bool _bStartTeaching;
+	float _fTeachingTimer;
 
 //----------------------------------
 //Gaming
@@ -58,7 +59,8 @@ private:
 	virtual void drawGaming() override;
 
 private:
-	float fGameFloatTimer_;
+	float	_fGameFloatTimer;
+	bool	_bStartGaming;
 };
 
 #endif // !AIRWAVE_PROJECTOR_ANGEL

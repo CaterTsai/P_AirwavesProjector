@@ -27,7 +27,8 @@ public:
 	void play();
 	void stop();
 	void timeoutTeachingMode();
-	
+	void startGaming();
+
 private:
 	CHARACTER_MAP	_CharacterMap;
 	CHARACTER_ITER	_NowCharacter;

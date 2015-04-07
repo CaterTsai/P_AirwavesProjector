@@ -33,11 +33,11 @@ static float cALIEN_FADEIN_TIME = 0.5;
 static float cALIEN_ATTRACTIVE_TIME = 3.0;
 static int cALIEN_INTERVAL_NUM = 7;
 static float cUFO_INTERVAL_DURATION = 0.5;
-static pair<float, float>	cALIEN_SCALE = make_pair(0.5, 0.8);
+static pair<float, float>	cALIEN_SCALE = make_pair(1.0, 1.8);
 static pair<float, float>	cALIEN_CREATE_DURATION = make_pair(0.2, 0.5);
-static int cALIEN_TEACHING_STEPS = 2;
 static float cALIEN_SHORTEST_TIME = 5.0;
 static float cALIEN_PICTURE_INTERVAL = cALIEN_SHORTEST_TIME/cPICTURE_NUM;
+static int cALIEN_MAX_NUM = 20;
 
 //Angel
 static float cHEART_FADEOUT_TIME = 1.0;

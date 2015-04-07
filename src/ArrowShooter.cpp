@@ -60,7 +60,7 @@ void stArrowPoint::update(float fDelta, ofVec2f& LeftPos, ofVec2f& RightPos, ofR
 //@CLASS ArrowShooter
 void ArrowShooter::setup()
 {
-	_ArrowImg.loadImage("Roma/arrow.jpg");
+	_ArrowImg.loadImage("Roma/arrow.png");
 	_Anchor = ofVec2f(300, 30);
 
 	_ShooterPos[eSHOOT_TOP] = 150;

@@ -4,12 +4,20 @@
 #include "constParameter.h"
 #include "SkeletonHandler.h"
 #include "NameManager.h"
+#include "ofxHapPlayer.h"
 
 enum eCHARACTER_STATE
 {
 	eCHARACTER_WAIT	=	0
 	,eCHARACTER_TEACHING
 	,eCHARACTER_GAMING
+};
+
+enum eTEACHING_STATE
+{
+	eTEACHING_START,
+	eTEACHING_PASS1,
+	eTEACHING_FINISH
 };
 
 class CharacterObj
@@ -19,6 +27,8 @@ public:
 	void update(ofPoint DrawPos, float fRotate);
 	void draw();
 	void setSizebyBody(float fBody);
+	void start();
+	void stop();
 public:
 	inline string getName() const
 	{
@@ -31,7 +41,7 @@ public:
 	}
 
 private:
-	ofImage		_obj;	//TODO: Image -> Video
+	ofVideoPlayer	_obj;	//TODO: Image -> Video
 
 	ofPoint		_DrawPos;
 	float		_fRotate;
@@ -64,7 +74,7 @@ public:
 	virtual void setScale(float fBody);
 	
 	virtual void teachingTimeout(){};
-
+	virtual void startGame(){};
 public:
 	static	ofEvent<pair<string, string>>	CharacterEvent;
 
@@ -84,6 +94,7 @@ protected:
 protected:
 	bool					_bIsSetup, _bIsDisplay;
 	eCHARACTER_STATE		_eState;
+	eTEACHING_STATE			_eTeachingState;
 	vector<CharacterObj>	_ObjectList;
 
 	int						_iPictureCounter;

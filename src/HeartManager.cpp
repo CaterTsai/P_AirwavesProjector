@@ -96,7 +96,7 @@ void stFloatHeartPoint::update(float fDelta)
 #pragma region CLASS HeartManager
 void HeartManager::setup()
 {
-	_FlyingHeartImg.loadImage("Angel/FlyHeart.jpg");
+	_FlyingHeartImg.loadImage("Angel/FlyHeart.png");
 	_FloatHeartImg.loadImage("Angel/FloatingHeart.png");
 	_BigHeartImg.loadImage("Angel/BigHeart.png");
 }
@@ -175,18 +175,18 @@ void HeartManager::draw()
 	
 	ofSetColor(255);
 	//Fly Heart
-	ofEnableBlendMode(ofBlendMode::OF_BLENDMODE_ADD);
+	ofEnableAlphaBlending();
 	for(auto& Iter_ : _FlyingHeartList)
 	{
 		ofPushMatrix();
 		ofTranslate(Iter_.Position);
-		_FlyingHeartImg.draw(-_FlyingHeartImg.width/2, -_FlyingHeartImg.height/2);
+		float fScaleWidth_ = _FlyingHeartImg.width * Iter_.fScale;
+		float fScaleHeight_ = _FlyingHeartImg.height * Iter_.fScale;
+		_FlyingHeartImg.draw(-fScaleWidth_/2, -fScaleHeight_/2, fScaleWidth_, fScaleHeight_);
 		ofPopMatrix();
 	}
-	ofDisableBlendMode();
 
 	//Float Heart
-	ofEnableAlphaBlending();
 	for(auto& Iter_ : _FloatingHeartList)
 	{
 		ofPushMatrix();
@@ -231,7 +231,7 @@ void HeartManager::draw()
 		}
 		ofPopMatrix();
 	}
-
+	ofDisableBlendMode();
 	ofPopStyle();
 }
 

@@ -4,7 +4,7 @@ void CharacterAlien::setupCharacter()
 {
 	//Alien Head
 	CharacterObj	AlienHeadObj_;
-	AlienHeadObj_.setup(NAME_MGR::C_Alien_Head, "Alien/head.jpg", ofVec2f(157, 295), 0.7);
+	AlienHeadObj_.setup(NAME_MGR::C_Alien_Head, "Alien/head.mov", ofVec2f(193, 337), 0.6);
 
 	_ObjectList.push_back(AlienHeadObj_);
 
@@ -22,39 +22,27 @@ void CharacterAlien::reset()
 	_AlienCatcher.clear();
 }
 
+//--------------------------------------------------------------
+void CharacterAlien::startGame()
+{
+	if(_eState == eCHARACTER_GAMING)
+	{
+		_AlienCatcher.setAutoCreate(true);
+	}
+}
+
 #pragma region Alien Cathcer
 //--------------------------------------------------------------
 void CharacterAlien::onLastAlien(string& e)
 {
-	if(_eState == eCHARACTER_TEACHING)
+	if(_eState == eCHARACTER_TEACHING && _eTeachingState == eTEACHING_PASS1)
 	{
-		this->addTeachingAlien();
-	}
-}
-
-//--------------------------------------------------------------
-void CharacterAlien::addTeachingAlien()
-{
-	switch(_iAlienCounter)
-	{
-	case 2:
-		_AlienCatcher.addAlien(200);
-		_iAlienCounter--;
-		break;
-	case 1:
-		_AlienCatcher.addAlien(cWINDOW_WIDTH - 200);
-		_iAlienCounter--;
-		break;
-	case 0:
-		//Finish Teaching
+		_eTeachingState = eTEACHING_FINISH;
 		_eState = eCHARACTER_GAMING;
-		_AlienCatcher.setAutoCreate(true);
 
 		//Event
 		pair<string, string> Event_ = make_pair(NAME_MGR::EVENT_TeachingFinish, ofToString(eCHARACTER_ALIEN));
 		ofNotifyEvent(IBaseCharacter::CharacterEvent, Event_);
-
-		break;
 	}
 }
 
@@ -115,6 +103,17 @@ float CharacterAlien::getCtrlPos(SkeletonHandler& SkeletonHandler)
 		}
 		break;
 	}
+
+	if(_eHandState != eNO_LOCKON && _eTeachingState == eTEACHING_START)
+	{
+		_eTeachingState = eTEACHING_PASS1;
+		_AlienCatcher.addAlien(200); //TODO Change position relative with UFO?
+		
+		//Event
+		pair<string, string> Event_ = make_pair(NAME_MGR::EVENT_TeachingCheck, ofToString(eCHARACTER_ALIEN));
+		ofNotifyEvent(IBaseCharacter::CharacterEvent, Event_);
+	}
+
 	return CtrlPos_;
 }
 #pragma endregion
@@ -136,9 +135,9 @@ void CharacterAlien::updateCharacterObj(CharacterObj& Obj, SkeletonHandler& Skel
 //--------------------------------------------------------------
 void CharacterAlien::setupTeaching()
 {
-	_iAlienCounter = cALIEN_TEACHING_STEPS;
-	this->addTeachingAlien();
-
+	//this->addTeachingAlien();
+	_eHandState = eNO_LOCKON;
+	_eTeachingState	=	eTEACHING_START;
 	_iPictureCounter = 0;
 	_fPictureTimer = _fPirecureInterval = cANGEL_PICTURE_INTERVAL;
 }

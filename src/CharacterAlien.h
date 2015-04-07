@@ -16,6 +16,7 @@ class CharacterAlien : public IBaseCharacter
 public:
 	virtual void setupCharacter() override;
 	virtual void reset() override;
+	virtual void startGame() override;
 
 //----------------------------------
 //Alien Catcher
@@ -23,12 +24,11 @@ public:
 public:
 	void onLastAlien(string& e);
 private:
-	void addTeachingAlien();
 	float getCtrlPos(SkeletonHandler& SkeletonHandler);
 private:
-	int				_iAlienCounter;
 	eLOCKON_HAND	_eHandState;
 	AlienCatcher	_AlienCatcher;
+
 //----------------------------------
 //Character Object Update
 //----------------------------------

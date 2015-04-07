@@ -121,6 +121,15 @@ void ProjectorView::keyPressed(int key)
 	//		_CharacterMgr.play();
 	//	}
 	//	break;
+	case 's':
+		{
+			if(!_bHaveUser)
+			{
+				return;
+			}
+			_CharacterMgr.startGaming();
+		}
+		break;
 	case 'r':
 		{
 			_CharacterMgr.stop();
@@ -142,7 +151,7 @@ void ProjectorView::keyPressed(int key)
 	}
 
 	//Kinect setting (only work on debug mode)
-	this->settingKinect(key);
+	//this->settingKinect(key);
 }
 
 #pragma region Kinect
@@ -250,7 +259,11 @@ void ProjectorView::settingKinect(int key)
 //--------------------------------------------------------------
 void ProjectorView::onCharacterEvent(pair<string, string>& e)
 {
-	if(e.first == NAME_MGR::EVENT_TeachingFinish)
+	if(e.first == NAME_MGR::EVENT_TeachingCheck)
+	{
+		_Connector.sendCMD(eCONNECTOR_CMD::eP2D_TEACHING_CHECK, e.second);
+	}
+	else if(e.first == NAME_MGR::EVENT_TeachingFinish)
 	{
 		_Connector.sendCMD(eCONNECTOR_CMD::eP2D_TEACHING_END, e.second);
 	}
@@ -291,6 +304,11 @@ void ProjectorView::onConnectorEvent(pair<eCONNECTOR_CMD, string>& e)
 				_CharacterMgr.setCharacter(_eCharacterType, _SkeletonHandler.getBodySize());
 			}
 			_CharacterMgr.play();
+		}
+		break;
+	case eD2P_GAME_START:
+		{
+			_CharacterMgr.startGaming();
 		}
 		break;
 	case eD2P_GAME_TIMEOUT:
