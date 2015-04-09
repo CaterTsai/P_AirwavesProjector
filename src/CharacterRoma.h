@@ -24,7 +24,8 @@ private:
 //----------------------------------
 private:
 	void updateCharacterObj(CharacterObj& Obj, SkeletonHandler& SkeletonHandler);
-
+private:
+	float _fScaleSpearSize;
 //----------------------------------
 //Teaching
 //----------------------------------

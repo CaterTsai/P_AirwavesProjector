@@ -6,50 +6,66 @@
 //Arrow Point
 ofEvent<bool> stArrowPoint::ArrowEvent = ofEvent<bool>();
 
-void stArrowPoint::update(float fDelta, ofVec2f& LeftPos, ofVec2f& RightPos, ofRectangle& bodyRect)
+void stArrowPoint::update(float fDelta, ofVec2f& SpearStart, ofVec2f& SpearEnd, ofVec2f& RightPos, ofRectangle& bodyRect)
 {
 	if(!bLive)
 	{
 		return;
 	}
-
-	Position += Velocity * fDelta;
-	
-	ofVec2f ActivePos_;
-	float fDistHandX_ = 0.0;
-	
-	if(Velocity.x > 0)
+	AnimAlpha.update(fDelta);
+	if(bBroke)
 	{
-		ActivePos_ = LeftPos;
-		fDistHandX_ = ActivePos_.x - Position.x;
+		if(AnimAlpha.getPercentDone() == 1.0 && AnimAlpha.hasFinishedAnimating())
+		{
+			bLive = false;
+		}
+		return;
 	}
-	else
-	{
-		ActivePos_ = RightPos;
-		fDistHandX_ = Position.x - ActivePos_.x;
-	}
-		
+	
+	Position += Velocity * fDelta;		
 	if(bodyRect.inside(Position))
 	{
 		//Hit the body
 		bLive = false;
 		bool bDefend_ = false;
 		ofNotifyEvent(ArrowEvent, bDefend_);
-	}
-
-	if(fDistHandX_ > cARROW_TRIGGER_DISTANCE_X)
-	{
-		//Arrow isn't in trigger area
 		return;
 	}
-	
-	float fDistHandY_ = abs(Position.y - ActivePos_.y);
-	if(fDistHandY_ <= cARROW_DEFEND_DISTANCE_Y)
+
+	if(Velocity.x > 0)
 	{
-		//Defend success
-		bLive = false;
-		bool bDefend_ = true;
-		ofNotifyEvent(ArrowEvent, bDefend_);
+		//Spear
+		ofVec2f v1_ = Position - SpearStart;
+		ofVec2f v2_ = SpearEnd - SpearStart;
+		float fRadian_ = v1_.angleRad(v2_);
+		float fDistSpear_ = fabs(v1_.length() * v2_.length() * sin(fRadian_))/SpearStart.distance(SpearEnd);
+
+		float fSpearMinY_ = min(SpearStart.y, SpearEnd.y);
+		float fSpearMaxY_ = max(SpearStart.y, SpearEnd.y);
+
+		if(fDistSpear_ <= cARROW_DEFEND_SPEAR_DIST && Position.y >= fSpearMinY_ && Position.y <= fSpearMaxY_)
+		{
+			//Defend success
+			bBroke = true;
+			AnimAlpha.animateFromTo(255, 0);
+			bool bDefend_ = true;
+			ofNotifyEvent(ArrowEvent, bDefend_);
+		}
+	}
+	else
+	{
+		//Shield
+		float fDistHandX_ = abs(Position.x - RightPos.x);
+		float fDistHandY_ = abs(Position.y - RightPos.y);
+
+		if(fDistHandX_ <= cARROW_TRIGGER_SHIELD_X && fDistHandY_ <= cARROW_DEFEND_SHIELD_Y)
+		{
+			//Defend success
+			bBroke = true;
+			AnimAlpha.animateFromTo(255, 0);
+			bool bDefend_ = true;
+			ofNotifyEvent(ArrowEvent, bDefend_);
+		}
 	}
 }
 
@@ -61,7 +77,8 @@ void stArrowPoint::update(float fDelta, ofVec2f& LeftPos, ofVec2f& RightPos, ofR
 void ArrowShooter::setup()
 {
 	_ArrowImg.loadImage("Roma/arrow.png");
-	_Anchor = ofVec2f(300, 30);
+	_ArrowBrokeImg.loadImage("Roma/arrow_broke.png");
+	_Anchor = ofVec2f(480, 85);
 
 	_ShooterPos[eSHOOT_TOP] = 150;
 	_ShooterPos[eSHOOT_MIDDLE] = 450;
@@ -69,10 +86,13 @@ void ArrowShooter::setup()
 }
 
 //--------------------------------------------------------------
-void ArrowShooter::update(float fDelta, SkeletonHandler& SkeletonHandler)
+void ArrowShooter::update(float fDelta, SkeletonHandler& SkeletonHandler, float fSpearSize)
 {
-	ofVec2f LeftHand_ = SkeletonHandler.getJoints(_JointType::JointType_HandLeft);
 	ofVec2f RightHand_ = SkeletonHandler.getJoints(_JointType::JointType_HandRight);
+	ofVec2f LeftHand_ = SkeletonHandler.getJoints(_JointType::JointType_HandLeft);
+	ofVec2f SpearVec_ = (LeftHand_ - SkeletonHandler.getJoints(_JointType::JointType_ElbowLeft)).normalize();
+	ofVec2f SpearStart_ = LeftHand_ + (SpearVec_ * (fSpearSize * cSPEAR_HAND_RATIO));
+	ofVec2f SpearEnd_ = LeftHand_ + ((-SpearVec_) * (fSpearSize * (1 - cSPEAR_HAND_RATIO)));
 
 	ofVec2f Spine_ = SkeletonHandler.getJoints(_JointType::JointType_SpineMid);
 	float BodyWidth_ = (SkeletonHandler.getJoints(_JointType::JointType_ShoulderLeft).x - SkeletonHandler.getJoints(_JointType::JointType_ShoulderRight).x);
@@ -84,7 +104,7 @@ void ArrowShooter::update(float fDelta, SkeletonHandler& SkeletonHandler)
 	auto Iter_ = _ArrowList.begin();
 	while(Iter_ != _ArrowList.end())
 	{
-		Iter_->update(fDelta, LeftHand_, RightHand_, BodyRect_);
+		Iter_->update(fDelta, SpearStart_, SpearEnd_, RightHand_, BodyRect_);
 
 		if(!Iter_->bLive)
 		{
@@ -95,7 +115,8 @@ void ArrowShooter::update(float fDelta, SkeletonHandler& SkeletonHandler)
 			++Iter_;
 		}
 	}
-
+	
+	
 	//auto add new arrow
 	if(!_bStartAutoShoot)
 	{
@@ -120,6 +141,7 @@ void ArrowShooter::update(float fDelta, SkeletonHandler& SkeletonHandler)
 			break;
 		}
 		_fShooterTimer = ofRandom(cAUTO_SHOOT_TIME.first, cAUTO_SHOOT_TIME.second);
+		Target_.y += ofRandom(cARROW_TARGET_RANGE_Y.first, cARROW_TARGET_RANGE_Y.second);
 		this->shoot(Target_, eType_);
 	}
 }
@@ -129,8 +151,8 @@ void ArrowShooter::draw()
 {
 	ofPushStyle();
 
-	ofSetColor(255);
-	ofEnableBlendMode(ofBlendMode::OF_BLENDMODE_ADD);
+	ofEnableAlphaBlending();
+	
 	for(auto& Iter_ : _ArrowList)
 	{
 		if(!Iter_.bLive)
@@ -138,10 +160,20 @@ void ArrowShooter::draw()
 			continue;
 		}
 		
+		ofSetColor(255, 255, 255, Iter_.AnimAlpha.getCurrentValue());
 		ofPushMatrix();
 		ofTranslate(Iter_.Position);
 		ofRotateZ(-Iter_.fDegree);
-		_ArrowImg.draw(-_Anchor);
+		
+		if(Iter_.bBroke)
+		{
+			_ArrowImg.draw(-_Anchor);
+		}
+		else
+		{
+			_ArrowImg.draw(-_Anchor);
+		}
+		
 		ofPopMatrix();
 	}
 	ofPopStyle();

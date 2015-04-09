@@ -18,9 +18,14 @@ typedef enum eCHARACTER_TYPE
 };
 
 //Roma
-static int cARROW_TRIGGER_DISTANCE_X = 30;
-static int cARROW_DEFEND_DISTANCE_Y = 200;
+static int cARROW_TRIGGER_SHIELD_X = 60;
+static int cARROW_TRIGGER_SPEAR_X = 80;
+static int cARROW_DEFEND_SHIELD_Y = 200;
+static int cARROW_DEFEND_SPEAR_DIST = 30;
 static int cARROW_HIT_DISTANCE_X = 30;
+static float cSPEAR_RATIO = 560.0/650.0;
+static float cSPEAR_HAND_RATIO = 0.48;
+static pair<int, int> cARROW_TARGET_RANGE_Y = make_pair(-30, 30);
 static pair<float, float>	cAUTO_SHOOT_TIME = make_pair(0.3, 0.5);
 static pair<float, float>	cARROW_DURATION = make_pair(2, 5);
 static int cARROW_START_X = 300;

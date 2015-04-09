@@ -17,22 +17,29 @@ enum eSHOOT_TARGET_TYPE
 //@STRUCT stArrowPoint
 typedef struct _stArrowPoint
 {
-	bool				bLive;
+	bool				bLive, bBroke;
 	float				fDegree;
 	ofVec2f				Position;
 	ofVec2f				Velocity;
-	
+	ofxAnimatableFloat	AnimAlpha;
+
 	static	ofEvent<bool>	ArrowEvent;
 
 	_stArrowPoint(ofVec2f Start, ofVec2f End, float fDuration)
 		:bLive(true)
+		,bBroke(false)
 	{
 		Position = Start;
 		Velocity = (End - Start)/fDuration;
 		fDegree = Velocity.angle(ofVec2f(1, 0));
+
+		AnimAlpha.reset(255);
+		AnimAlpha.setCurve(AnimCurve::BLINK_AND_FADE_3);
+		AnimAlpha.setRepeatType(AnimRepeat::PLAY_ONCE);
+		AnimAlpha.setDuration(0.4);
 	}
 
-	void update(float fDelta, ofVec2f& LeftPos, ofVec2f& RightPos, ofRectangle& bodyRect);
+	void update(float fDelta, ofVec2f& SpearStart, ofVec2f& SpearEnd, ofVec2f& RightPos, ofRectangle& bodyRect);
 }stArrowPoint;
 
 typedef list<stArrowPoint>		ARROW_LIST;
@@ -48,7 +55,7 @@ public:
 		,_fShooterTimer(0.0)
 	{}
 	void setup();
-	void update(float fDelta, SkeletonHandler& SkeletonHandler);
+	void update(float fDelta, SkeletonHandler& SkeletonHandler, float fSpearSize);
 	void draw();
 	void clear();
 
@@ -68,7 +75,7 @@ public:
 	}
 
 private:
-	ofImage			_ArrowImg;
+	ofImage			_ArrowImg, _ArrowBrokeImg;
 	ofVec2f			_Anchor;
 	ARROW_LIST		_ArrowList;
 

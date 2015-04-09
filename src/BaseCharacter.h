@@ -40,6 +40,11 @@ public:
 		return _DrawPos;
 	}
 
+	inline ofRectangle getScaleRect() const
+	{
+		return ofRectangle(0, 0, _fScaleWidth, _fScaleHeight);
+	}
+
 private:
 	ofVideoPlayer	_obj;	//TODO: Image -> Video
 
