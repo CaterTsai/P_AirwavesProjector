@@ -56,8 +56,9 @@ void CharacterRoma::onArrowHit(bool& bDefence)
 			if(_eTeachingState == eTEACHING_START)
 			{
 				_eTeachingState = eTEACHING_PASS1;
-				pair<string, string> Event_ = make_pair(NAME_MGR::EVENT_TeachingCheck, ofToString(eCHARACTER_ALIEN));
+				pair<string, string> Event_ = make_pair(NAME_MGR::EVENT_TeachingCheck, ofToString(eCHARACTER_ROMA));
 				ofNotifyEvent(IBaseCharacter::CharacterEvent, Event_);
+				_fShootTimer = 5.0;
 			}
 			else if(_eTeachingState == eTEACHING_PASS1)
 			{

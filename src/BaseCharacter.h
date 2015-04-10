@@ -78,7 +78,7 @@ public:
 	virtual void stop();
 	virtual void setScale(float fBody);
 	
-	virtual void teachingTimeout(){};
+	virtual void teachingTimeout();
 	virtual void startGame(){};
 public:
 	static	ofEvent<pair<string, string>>	CharacterEvent;

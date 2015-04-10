@@ -127,6 +127,7 @@ public:
 	void addFloting(ofVec2f Pos);
 
 	int getFloatingNum();
+	bool getFloatingPos(int id, ofVec2f& pos);
 private:
 	
 	ofImage		_FlyingHeartImg, _FloatHeartImg, _BigHeartImg;

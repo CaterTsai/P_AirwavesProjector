@@ -1,5 +1,6 @@
 #include "ProjectorView.h"
 
+#pragma region Basic Functions
 void ProjectorView::setup()
 {
 	ofBackground(0);
@@ -26,7 +27,13 @@ void ProjectorView::setup()
 	_Connector.initConnector("127.0.0.1", 2233, 5566);
 	ofAddListener(_Connector.AirwavesConnectorEvent, this, &ProjectorView::onConnectorEvent);
 
-	_Background.loadImage("background_1.jpg");
+	//Background
+	_bDisplayLight = false;
+	_BackgroundL.loadImage("background_l.jpg");
+	_BackgroundD.loadImage("background_d.jpg");
+	_AnimBackgroundFade.setDuration(1.0);
+	_AnimBackgroundFade.reset(0.0);
+
 	_Human.loadImage("human_2.png");
 
 	_SkeletonHandler.setDisplay(true);
@@ -40,12 +47,16 @@ void ProjectorView::update()
 	float fDelta_ = ofGetElapsedTimef() - _fMainTimer;
 	_fMainTimer += fDelta_;
 
+	//Background
+	this->updateBackground(fDelta_);
+
 	//Kinect
 	this->updateKinect();
 
 	//Character
 	_CharacterMgr.updateCharacterMgr(fDelta_, _SkeletonHandler);
 
+	//Connector
 	_Connector.updateConnector();
 }
 
@@ -53,12 +64,14 @@ void ProjectorView::update()
 void ProjectorView::draw()
 {
 	ofSetColor(255);
-
-	_Background.draw(0, 0);
 	
+	//Background
+	this->drawBackground();
+
 	//Character
 	_CharacterMgr.drawCharacterMgr();
 
+	//-----------------------
 	//Debug
 	_Human.draw(ofGetWindowWidth()/2 - _Human.width/2, ofGetWindowHeight() - _Human.height);
 
@@ -130,9 +143,10 @@ void ProjectorView::keyPressed(int key)
 			_CharacterMgr.startGaming();
 		}
 		break;
-	case 'r':
+	case 't':
 		{
-			_CharacterMgr.stop();
+			_CharacterMgr.timeoutTeachingMode();
+			//_CharacterMgr.stop();
 		}
 		break;
 	//Kinect ctrl
@@ -153,6 +167,48 @@ void ProjectorView::keyPressed(int key)
 	//Kinect setting (only work on debug mode)
 	//this->settingKinect(key);
 }
+#pragma endregion
+
+#pragma region Background
+//--------------------------------------------------------------
+void ProjectorView::updateBackground(float fDelta)
+{
+	_AnimBackgroundFade.update(fDelta);
+
+	if(_AnimBackgroundFade.isAnimating())
+	{
+		return;
+	}
+
+	if(_bHaveUser && !_bDisplayLight)
+	{
+		//Change to light background
+		_AnimBackgroundFade.animateTo(255);
+		_bDisplayLight = true;
+	}
+	else if(!_bHaveUser && _bDisplayLight)
+	{
+		//Change to dark background
+		_AnimBackgroundFade.animateTo(0.0);
+		_bDisplayLight = false;
+	}
+}
+
+//--------------------------------------------------------------
+void ProjectorView::drawBackground()
+{
+	ofPushStyle();
+	ofEnableAlphaBlending();
+
+	ofSetColor(255);
+	_BackgroundD.draw(0, 0);
+
+	ofSetColor(255, 255, 255, _AnimBackgroundFade.getCurrentValue());
+	_BackgroundL.draw(0, 0);
+	ofPopStyle();
+}
+
+#pragma endregion
 
 #pragma region Kinect
 //--------------------------------------------------------------
@@ -304,6 +360,11 @@ void ProjectorView::onConnectorEvent(pair<eCONNECTOR_CMD, string>& e)
 				_CharacterMgr.setCharacter(_eCharacterType, _SkeletonHandler.getBodySize());
 			}
 			_CharacterMgr.play();
+		}
+		break;
+	case eD2P_TEACHING_TIMEOUT:
+		{
+			_CharacterMgr.timeoutTeachingMode();
 		}
 		break;
 	case eD2P_GAME_START:

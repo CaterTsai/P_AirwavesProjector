@@ -6,7 +6,7 @@
 #include "AirwavesConnector.h"
 #include "ofxCTKinectV2.h"
 #include "ofxXmlSettings.h"
-
+#include "ofxAnimatableFloat.h"
 #include "CharacterMgr.h"
 
 class ProjectorView : public ofBaseApp
@@ -20,9 +20,19 @@ public:
 
 public:
 	float		_fMainTimer;
-	ofImage		_Background;
+	//DEBUG	
 	ofImage		_Human;
 
+//-------------------------------------------------
+//Background
+//-------------------------------------------------
+public:
+	void updateBackground(float fDelta);
+	void drawBackground();
+private:
+	ofxAnimatableFloat	_AnimBackgroundFade;
+	bool				_bDisplayLight;
+	ofImage				_BackgroundL, _BackgroundD;
 //-------------------------------------------------
 //Kinect 
 //-------------------------------------------------

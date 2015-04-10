@@ -47,7 +47,7 @@ private:
 	virtual void drawTeaching() override;
 
 private:
-	bool _bStartTeaching;
+	bool _bStartTimer;
 	float _fTeachingTimer;
 
 //----------------------------------

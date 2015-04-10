@@ -77,8 +77,7 @@ void stArrowPoint::update(float fDelta, ofVec2f& SpearStart, ofVec2f& SpearEnd, 
 void ArrowShooter::setup()
 {
 	_ArrowImg.loadImage("Roma/arrow.png");
-	_ArrowBrokeImg.loadImage("Roma/arrow_broke.png");
-	_Anchor = ofVec2f(480, 85);
+	_Anchor = ofVec2f(273, 32);
 
 	_ShooterPos[eSHOOT_TOP] = 150;
 	_ShooterPos[eSHOOT_MIDDLE] = 450;
@@ -164,16 +163,7 @@ void ArrowShooter::draw()
 		ofPushMatrix();
 		ofTranslate(Iter_.Position);
 		ofRotateZ(-Iter_.fDegree);
-		
-		if(Iter_.bBroke)
-		{
-			_ArrowImg.draw(-_Anchor);
-		}
-		else
-		{
-			_ArrowImg.draw(-_Anchor);
-		}
-		
+		_ArrowImg.draw(-_Anchor);
 		ofPopMatrix();
 	}
 	ofPopStyle();

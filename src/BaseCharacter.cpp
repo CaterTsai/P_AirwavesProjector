@@ -136,7 +136,7 @@ void IBaseCharacter::play()
 {
 	if(!_bIsSetup)
 	{
-		ofLog(OF_LOG_ERROR, "This character is not setup");
+		ofLog(OF_LOG_ERROR, "[IBaseCharacter] This character is not setup");
 		return;
 	}
 	_eState = eCHARACTER_TEACHING;
@@ -188,6 +188,15 @@ void IBaseCharacter::takePicture(float fDelta)
 		ofNotifyEvent(IBaseCharacter::CharacterEvent, Event_);
 		_iPictureCounter++;
 		_fPictureTimer = _fPirecureInterval;
+	}
+}
+
+//--------------------------------------------------------------
+void IBaseCharacter::teachingTimeout()
+{
+	if(_eState == eCHARACTER_TEACHING)
+	{
+		_eState = eCHARACTER_GAMING;
 	}
 }
 #pragma endregion

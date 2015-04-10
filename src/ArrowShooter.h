@@ -75,7 +75,7 @@ public:
 	}
 
 private:
-	ofImage			_ArrowImg, _ArrowBrokeImg;
+	ofImage			_ArrowImg;
 	ofVec2f			_Anchor;
 	ARROW_LIST		_ArrowList;
 

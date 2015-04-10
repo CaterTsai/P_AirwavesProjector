@@ -48,12 +48,24 @@ void CharacterAngel::onHeartHit(string& e)
 {
 	if(_eState == eCHARACTER_TEACHING)
 	{
-		_bStartTeaching = false;
-		_eState = eCHARACTER_GAMING;
+		if(_eTeachingState == eTEACHING_START)
+		{
+			//Event
+			pair<string, string> Event_ = make_pair(NAME_MGR::EVENT_TeachingCheck, ofToString(eCHARACTER_ANGEL));
+			ofNotifyEvent(IBaseCharacter::CharacterEvent, Event_);
 
-		//Event
-		pair<string, string> Event_ = make_pair(NAME_MGR::EVENT_TeachingFinish, ofToString(eCHARACTER_ANGEL));
-		ofNotifyEvent(IBaseCharacter::CharacterEvent, Event_);
+			_eTeachingState = eTEACHING_PASS1;
+			_bStartTimer = true;
+			_fTeachingTimer = 3.0;
+		}
+		else if(_eTeachingState == eTEACHING_PASS1)
+		{
+			_eTeachingState = eTEACHING_FINISH;
+
+			//Event
+			pair<string, string> Event_ = make_pair(NAME_MGR::EVENT_TeachingFinish, ofToString(eCHARACTER_ANGEL));
+			ofNotifyEvent(IBaseCharacter::CharacterEvent, Event_);
+		}
 	}
 }
 
@@ -149,8 +161,8 @@ void CharacterAngel::updateCharacterObj(CharacterObj& Obj, SkeletonHandler& Skel
 void CharacterAngel::setupTeaching()
 {
 	_fTeachingTimer = 1.0;
-	_bStartTeaching = false;
-
+	_bStartTimer = true;
+	_eTeachingState = eTEACHING_START;
 	_iPictureCounter = 0;
 	_fPictureTimer = _fPirecureInterval = cANGEL_PICTURE_INTERVAL;
 }
@@ -166,6 +178,12 @@ void CharacterAngel::updateTeaching(float fDelta, SkeletonHandler& SkeletonHandl
 
 	_HeartManager.update(fDelta);
 
+	if(_eTeachingState == eTEACHING_FINISH)
+	{
+		_HeartManager.clear();
+		_eState = eCHARACTER_GAMING;
+	}
+
 	if(gestureCheck(SkeletonHandler))
 	{
 		//add fly heart
@@ -179,15 +197,22 @@ void CharacterAngel::updateTeaching(float fDelta, SkeletonHandler& SkeletonHandl
 			Direction_.rotate(ofRandom(cFLYING_HEART_DEGREE.first, cFLYING_HEART_DEGREE.second));
 			Direction_.normalize();
 		}
+
+		//add special heart
+		ofVec2f Pos_;
+		if(_HeartManager.getFloatingPos(0, Pos_))
+		{
+			_HeartManager.addFlying(Body_, Pos_, 1.5);
+		}
 	}
-	
-	if(!_bStartTeaching)
+
+	if(_bStartTimer)
 	{
 		_fTeachingTimer -= fDelta;
 		if(_fTeachingTimer < 0.0)
 		{
 			this->addFloatingHeart(cTEACHING_FLOATING_NUM);
-			_bStartTeaching = true;
+			_bStartTimer = false;
 		}
 	}
 

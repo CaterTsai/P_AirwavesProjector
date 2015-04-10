@@ -133,13 +133,13 @@ void HeartManager::update(float fDelta)
 			if(_FloatingHeartList.size() == 0)
 			{
 				//lastone event
-				string strHit_ = "last hit";
+				string strHit_ = "Hit";
 				ofNotifyEvent(HeartEvent, strHit_, this);
 			}
 		}
 		else
 		{
-			FloatIter_++;	
+			FloatIter_++;
 		}
 	}
 
@@ -261,5 +261,33 @@ void HeartManager::addFloting(ofVec2f Pos)
 int HeartManager::getFloatingNum()
 {
 	return _FloatingHeartList.size();
+}
+
+//--------------------------------------------------------------
+bool HeartManager::getFloatingPos(int id, ofVec2f& pos)
+{
+	if(id >= _FloatingHeartList.size())
+	{
+		return false;
+	}
+
+	auto Iter_ = _FloatingHeartList.begin();
+	if(Iter_ == _FloatingHeartList.end())
+	{
+		return false;
+	}
+
+	try
+	{
+		advance(Iter_, id);
+	}
+	catch(const exception& e)
+	{
+		ofLog(OF_LOG_ERROR, e.what());
+		return false;
+	}
+
+	pos = Iter_->Position;
+	return true;
 }
 #pragma endregion
