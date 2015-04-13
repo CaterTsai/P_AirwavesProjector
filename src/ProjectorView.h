@@ -20,7 +20,8 @@ public:
 
 public:
 	float		_fMainTimer;
-	//DEBUG	
+	//DEBUG
+
 	ofImage		_Human;
 
 //-------------------------------------------------
@@ -50,6 +51,8 @@ private:
 	CTKinectV2			_Kinect;
 
 	SkeletonHandler		_SkeletonHandler;
+
+	bool				_bDisplaySkeleton;
 
 //-------------------------------------------------
 //Character

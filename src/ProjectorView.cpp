@@ -16,6 +16,7 @@ void ProjectorView::setup()
 		getchar();
 		std::exit(1);
 	}
+	_SkeletonHandler.setMirror(true);
 	_Kinect.startThread();
 
 	//Character
@@ -34,9 +35,8 @@ void ProjectorView::setup()
 	_AnimBackgroundFade.setDuration(1.0);
 	_AnimBackgroundFade.reset(0.0);
 
-	_Human.loadImage("human_2.png");
-
-	_SkeletonHandler.setDisplay(true);
+	_bDisplaySkeleton = true;
+	_SkeletonHandler.setDisplay(_bDisplaySkeleton);
 
 	_fMainTimer = ofGetElapsedTimef();
 }
@@ -73,7 +73,7 @@ void ProjectorView::draw()
 
 	//-----------------------
 	//Debug
-	_Human.draw(ofGetWindowWidth()/2 - _Human.width/2, ofGetWindowHeight() - _Human.height);
+	//_Human.draw(ofGetWindowWidth()/2 - _Human.width/2, ofGetWindowHeight() - _Human.height);
 
 	//Kinect
 	this->drawKinect();
@@ -143,29 +143,21 @@ void ProjectorView::keyPressed(int key)
 			_CharacterMgr.startGaming();
 		}
 		break;
-	case 't':
+	case 'f':
 		{
-			_CharacterMgr.timeoutTeachingMode();
-			//_CharacterMgr.stop();
+			ofToggleFullscreen();
 		}
 		break;
-	//Kinect ctrl
 	case 'k':
 		{
-			if(_Kinect.isThreadRunning())
-			{
-				_Kinect.stopThread();
-			}
-			else
-			{
-				_Kinect.startThread();
-			}
-			break;
+			_bDisplaySkeleton = !_bDisplaySkeleton;
+			_SkeletonHandler.setDisplay(_bDisplaySkeleton);
 		}
+		break;
 	}
 
 	//Kinect setting (only work on debug mode)
-	//this->settingKinect(key);
+	this->settingKinect(key);
 }
 #pragma endregion
 
@@ -273,7 +265,7 @@ void ProjectorView::settingKinect(int key)
 	float fScale_ = _SkeletonHandler.getScale();
 	switch(key)
 	{
-	case 's':
+	case '=':
 		{
 			this->saveConfig();
 			break;

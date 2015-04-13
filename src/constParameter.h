@@ -3,8 +3,8 @@
 
 #include "ofMain.h"
 
-const int cWINDOW_WIDTH = 1215;
-const int cWINDOW_HEIGHT = 1024;
+const int cWINDOW_WIDTH = 1024;
+const int cWINDOW_HEIGHT = 768;
 
 const float cDEFAULT_BODY_SIZE = 710;
 const int cPICTURE_NUM = 5;

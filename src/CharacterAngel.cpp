@@ -8,7 +8,7 @@ void CharacterAngel::setupCharacter()
 
 	//Ring
 	CharacterObj	RingObj_;
-	RingObj_.setup(NAME_MGR::C_Angel_Ring, "Angel/ring.jpg", ofVec2f(156, 201), 0.2);
+	RingObj_.setup(NAME_MGR::C_Angel_Ring, "Angel/ring.mov", ofVec2f(156, 201), 0.2);
 
 	_ObjectList.push_back(WingsObj_);
 	_ObjectList.push_back(RingObj_);
@@ -224,8 +224,8 @@ void CharacterAngel::drawTeaching()
 {
 	ofPushStyle();
 	{
-		ofSetColor(255, 0, 0);
-		ofCircle(100, 100, 50);
+		//ofSetColor(255, 0, 0);
+		//ofCircle(100, 100, 50);
 
 		_HeartManager.draw();
 	}
@@ -288,8 +288,8 @@ void CharacterAngel::drawGaming()
 {
 	ofPushStyle();
 	{
-		ofSetColor(0, 255, 0);
-		ofCircle(100, 100, 50);
+		//ofSetColor(0, 255, 0);
+		//ofCircle(100, 100, 50);
 
 		_HeartManager.draw();
 	}

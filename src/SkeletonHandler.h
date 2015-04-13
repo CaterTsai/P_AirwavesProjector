@@ -11,6 +11,7 @@ public:
 		:_StartPos(StartPos)
 		,_fScale(fScale)
 		,_bHaveUser(false)
+		,_bIsMirror(false)
 		,_bDisplaySkeleton(false){}
 
 	void updateSkeleton(const bool bHaveUser_, ofVec2f (&Joints)[JointType_Count]);
@@ -50,6 +51,12 @@ public:
 		return _fScale;
 	}
 
+	//Mirror
+	inline void setMirror(const bool bValue)
+	{
+		_bIsMirror = true;
+	}
+
 	//for Debug
 	inline void setDisplay(const bool bValue = true)
 	{
@@ -59,6 +66,7 @@ public:
 private:
 	bool				_bDisplaySkeleton;
 	bool				_bHaveUser;
+	bool				_bIsMirror;
 
 	ofPoint				_StartPos;
 	float				_fScale;
