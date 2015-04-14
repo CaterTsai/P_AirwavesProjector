@@ -119,8 +119,7 @@ bool CharacterAngel::gestureCheck(SkeletonHandler& SkeletonHandler)
 	}
 	else if(_eHandState == eBOTH_HAND_UP)
 	{
-
-
+		AudioMgr::GetInstance()->playAudio(AUDIO_NAME_MGR::A_ANGEL_FLY);
 		_eHandState = eBOTH_HAND_WAIT;
 		bResult_ = true;
 	}

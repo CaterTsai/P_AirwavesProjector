@@ -32,4 +32,25 @@ namespace NAME_MGR
 	CREATE_VALUE(EVENT_TakePicture);
 };
 
+namespace AUDIO_NAME_MGR
+{
+//---------------------------------------
+// BGM
+//---------------------------------------
+	CREATE_VALUE(BGM_WAITING);
+	CREATE_VALUE(BGM_GAME);
+//---------------------------------------
+// Audio
+//---------------------------------------
+	CREATE_VALUE(A_ROMA_SHOOT);
+	CREATE_VALUE(A_ROMA_HIT);
+	CREATE_VALUE(A_ROMA_DEFENCE);
+
+	CREATE_VALUE(A_ALIEN_GOT);
+	CREATE_VALUE(A_ALIEN_TRANSPORT);
+
+	CREATE_VALUE(A_ANGEL_TOUCH);
+	CREATE_VALUE(A_ANGEL_FLY);
+};
+
 #endif // !AIRWAVES_PROJECTOR_NAMEMANAGER

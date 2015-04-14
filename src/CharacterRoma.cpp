@@ -181,6 +181,9 @@ void CharacterRoma::updateTeaching(float fDelta, SkeletonHandler& SkeletonHandle
 			ofLog(OF_LOG_ERROR, e.what());
 		}
 		_fShootTimer = 3.0;
+
+		//Audio
+		AudioMgr::GetInstance()->playAudio(AUDIO_NAME_MGR::A_ROMA_SHOOT);		
 	}
 	this->takePicture(fDelta);
 }

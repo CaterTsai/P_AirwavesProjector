@@ -16,7 +16,7 @@ void ProjectorView::setup()
 		getchar();
 		std::exit(1);
 	}
-	_SkeletonHandler.setMirror(true);
+	//_SkeletonHandler.setMirror(true);
 	_Kinect.startThread();
 
 	//Character
@@ -34,6 +34,11 @@ void ProjectorView::setup()
 	_BackgroundD.loadImage("background_d.jpg");
 	_AnimBackgroundFade.setDuration(1.0);
 	_AnimBackgroundFade.reset(0.0);
+
+	//Aduio & BGM
+	this->setupAudioMgr();
+	//AudioMgr::GetInstance()->playAudio(AUDIO_NAME_MGR::BGM_WAITING);
+	AudioMgr::GetInstance()->playAudio(AUDIO_NAME_MGR::BGM_GAME);
 
 	_bDisplaySkeleton = true;
 	_SkeletonHandler.setDisplay(_bDisplaySkeleton);
@@ -202,6 +207,24 @@ void ProjectorView::drawBackground()
 
 #pragma endregion
 
+#pragma region Audio Manager
+void ProjectorView::setupAudioMgr()
+{
+	AudioMgr::GetInstance()->addBGM(AUDIO_NAME_MGR::BGM_WAITING, "Audios/bgm_waiting.mp3");
+	AudioMgr::GetInstance()->addBGM(AUDIO_NAME_MGR::BGM_GAME, "Audios/bgm_gaming.mp3");
+
+	AudioMgr::GetInstance()->addAduio(AUDIO_NAME_MGR::A_ROMA_SHOOT, "Audios/roma_arrow.wav");
+	AudioMgr::GetInstance()->addAduio(AUDIO_NAME_MGR::A_ROMA_HIT, "Audios/roma_hit.wav");
+	AudioMgr::GetInstance()->addAduio(AUDIO_NAME_MGR::A_ROMA_DEFENCE, "Audios/roma_defence.wav");
+
+	AudioMgr::GetInstance()->addAduio(AUDIO_NAME_MGR::A_ALIEN_GOT, "Audios/alien_got.wav");
+	AudioMgr::GetInstance()->addAduio(AUDIO_NAME_MGR::A_ALIEN_TRANSPORT, "Audios/alien_transport.wav");
+
+	AudioMgr::GetInstance()->addAduio(AUDIO_NAME_MGR::A_ANGEL_TOUCH, "Audios/angel_touch.wav");
+	AudioMgr::GetInstance()->addAduio(AUDIO_NAME_MGR::A_ANGEL_FLY, "Audios/angel_fly.wav");
+}
+#pragma endregion
+
 #pragma region Kinect
 //--------------------------------------------------------------
 bool ProjectorView::initKinect()
@@ -352,6 +375,8 @@ void ProjectorView::onConnectorEvent(pair<eCONNECTOR_CMD, string>& e)
 				_CharacterMgr.setCharacter(_eCharacterType, _SkeletonHandler.getBodySize());
 			}
 			_CharacterMgr.play();
+			AudioMgr::GetInstance()->stopAudio(AUDIO_NAME_MGR::BGM_WAITING);
+			AudioMgr::GetInstance()->playAudio(AUDIO_NAME_MGR::BGM_GAME);
 		}
 		break;
 	case eD2P_TEACHING_TIMEOUT:
@@ -367,6 +392,12 @@ void ProjectorView::onConnectorEvent(pair<eCONNECTOR_CMD, string>& e)
 	case eD2P_GAME_TIMEOUT:
 		{
 			_CharacterMgr.stop();
+		}
+		break;
+	case eD2P_RESET:
+		{
+			AudioMgr::GetInstance()->stopAudio(AUDIO_NAME_MGR::BGM_GAME);
+			AudioMgr::GetInstance()->playAudio(AUDIO_NAME_MGR::BGM_WAITING);
 		}
 		break;
 	default :

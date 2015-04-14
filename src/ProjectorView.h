@@ -3,6 +3,7 @@
 
 #include "constParameter.h"
 #include "SkeletonHandler.h"
+#include "AudioMgr.h"
 #include "AirwavesConnector.h"
 #include "ofxCTKinectV2.h"
 #include "ofxXmlSettings.h"
@@ -34,6 +35,13 @@ private:
 	ofxAnimatableFloat	_AnimBackgroundFade;
 	bool				_bDisplayLight;
 	ofImage				_BackgroundL, _BackgroundD;
+
+//-------------------------------------------------
+//Audio Manager
+//-------------------------------------------------
+public:
+	void setupAudioMgr();
+
 //-------------------------------------------------
 //Kinect 
 //-------------------------------------------------

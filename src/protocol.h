@@ -9,6 +9,7 @@ typedef enum eCONNECTOR_CMD
 	,eD2P_TEACHING_TIMEOUT
 	,eD2P_GAME_START
 	,eD2P_GAME_TIMEOUT
+	,eD2P_RESET
 	,eD2P_MAX
 
 	//Projector to Display

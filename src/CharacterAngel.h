@@ -3,6 +3,8 @@
 
 #include "BaseCharacter.h"
 #include "HeartManager.h"
+#include "NameManager.h"
+#include "AudioMgr.h"
 
 enum eGESTURE_STATE
 {

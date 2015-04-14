@@ -17,6 +17,8 @@ void stAlienPoint::update(float fDelta, float UFOPosX, float fScaleLimit, float 
 				eState = eALIEN_FLY;
 				AnimUp.animateFromTo(0, 1);
 				AnimScale.animateFromTo(fScale, fScale*0.5);
+
+				AudioMgr::GetInstance()->playAudio(AUDIO_NAME_MGR::A_ALIEN_GOT);
 			}
 		}
 		break;
@@ -30,6 +32,8 @@ void stAlienPoint::update(float fDelta, float UFOPosX, float fScaleLimit, float 
 				AnimScale.pause();
 				AnimScaleFadeout.animateFromTo(fScale, 0.0);
 				eState = eALIEN_SCALE;
+
+				AudioMgr::GetInstance()->playAudio(AUDIO_NAME_MGR::A_ALIEN_TRANSPORT);
 			}
 		}
 		break;

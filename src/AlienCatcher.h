@@ -4,7 +4,8 @@
 #include "constParameter.h"
 #include "ofxAnimatableFloat.h"
 #include "ofxHapPlayer.h"
-
+#include "NameManager.h"
+#include "AudioMgr.h"
 #pragma region stAlienPoint
 //------------------------------
 //@STRUCT stAlienPoint

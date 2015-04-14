@@ -29,6 +29,9 @@ void stArrowPoint::update(float fDelta, ofVec2f& SpearStart, ofVec2f& SpearEnd, 
 		bLive = false;
 		bool bDefend_ = false;
 		ofNotifyEvent(ArrowEvent, bDefend_);
+		
+		//Audio
+		AudioMgr::GetInstance()->playAudio(AUDIO_NAME_MGR::A_ROMA_HIT);
 		return;
 	}
 
@@ -50,6 +53,9 @@ void stArrowPoint::update(float fDelta, ofVec2f& SpearStart, ofVec2f& SpearEnd, 
 			AnimAlpha.animateFromTo(255, 0);
 			bool bDefend_ = true;
 			ofNotifyEvent(ArrowEvent, bDefend_);
+
+			//Audio
+			AudioMgr::GetInstance()->playAudio(AUDIO_NAME_MGR::A_ROMA_DEFENCE);
 		}
 	}
 	else
@@ -65,6 +71,9 @@ void stArrowPoint::update(float fDelta, ofVec2f& SpearStart, ofVec2f& SpearEnd, 
 			AnimAlpha.animateFromTo(255, 0);
 			bool bDefend_ = true;
 			ofNotifyEvent(ArrowEvent, bDefend_);
+
+			//Audio
+			AudioMgr::GetInstance()->playAudio(AUDIO_NAME_MGR::A_ROMA_DEFENCE);
 		}
 	}
 }
@@ -182,6 +191,7 @@ void ArrowShooter::shoot(ofVec2f Start, ofVec2f End, float fDuration)
 {
 	stArrowPoint NewArrow_(Start, End, fDuration);
 	_ArrowList.push_back(NewArrow_);
+	AudioMgr::GetInstance()->playAudio(AUDIO_NAME_MGR::A_ROMA_SHOOT);
 }
 
 //--------------------------------------------------------------

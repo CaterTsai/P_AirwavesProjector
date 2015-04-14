@@ -61,6 +61,7 @@ void stFloatHeartPoint::update(float fDelta)
 			fTouchScale = AnimTouch.getCurrentValue() * fScale;
 			if(AnimBigHeart.getPercentDone() == 1.0 && AnimBigHeart.hasFinishedAnimating())
 			{
+				AudioMgr::GetInstance()->playAudio(AUDIO_NAME_MGR::A_ANGEL_TOUCH);
 				eState = eHEART_BIG_HEART;
 				FadeoutTimer = cHEART_FADEOUT_TIME;
 			}
