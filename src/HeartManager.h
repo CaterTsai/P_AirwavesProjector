@@ -4,8 +4,7 @@
 #include "constParameter.h"
 #include "ofxAnimatableFloat.h"
 #include "SkeletonHandler.h"
-#include "NameManager.h"
-#include "AudioMgr.h"
+
 
 #pragma region stFlyingHeartPoint
 //------------------------------

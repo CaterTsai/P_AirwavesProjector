@@ -8,7 +8,7 @@ void CharacterAngel::setupCharacter()
 
 	//Ring
 	CharacterObj	RingObj_;
-	RingObj_.setup(NAME_MGR::C_Angel_Ring, "Angel/ring.mov", ofVec2f(156, 201), 0.2);
+	RingObj_.setup(NAME_MGR::C_Angel_Ring, "Angel/ring.mov", ofVec2f(156, 240), 0.2);
 
 	_ObjectList.push_back(WingsObj_);
 	_ObjectList.push_back(RingObj_);
@@ -72,9 +72,19 @@ void CharacterAngel::onHeartHit(string& e)
 //--------------------------------------------------------------
 void CharacterAngel::addFloatingHeart(int iNum)
 {
+	ofVec2f Vec_(1, 0);
+	float fBaseDegree_ = 360.0 / iNum;
+	float fDegreeRange_ = fBaseDegree_/3.0;
+	Vec_.rotate(ofRandom(0, 359)).normalize();
 	for(int idx_ = 0; idx_ < iNum; idx_++)
 	{
-		_HeartManager.addFloting( ofVec2f(ofRandom(0, cWINDOW_WIDTH), ofRandom(0, cWINDOW_HEIGHT)) );
+		//random in window
+		//_HeartManager.addFloting( ofVec2f(ofRandom(0, cWINDOW_WIDTH), ofRandom(0, cWINDOW_HEIGHT)) );
+
+		//random in ring
+		Vec_.rotate(fBaseDegree_ * idx_ + ofRandom(-fDegreeRange_, fDegreeRange_)).normalize();
+		float fDist_ = cWINDOW_HEIGHT/2 * ofRandom(cFLOATING_HEART_DIST.first, cFLOATING_HEART_DIST.second);
+		_HeartManager.addFloting( ofVec2f(cWINDOW_WIDTH/2, cWINDOW_HEIGHT/2) + (Vec_ * fDist_));
 	}
 }
 

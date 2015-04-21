@@ -9,6 +9,7 @@
 #include "ofxXmlSettings.h"
 #include "ofxAnimatableFloat.h"
 #include "CharacterMgr.h"
+#include "configLoader.h"
 
 class ProjectorView : public ofBaseApp
 {
@@ -22,7 +23,7 @@ public:
 public:
 	float		_fMainTimer;
 	//DEBUG
-
+	bool		_bCtrlMode;
 	ofImage		_Human;
 
 //-------------------------------------------------
@@ -60,8 +61,6 @@ private:
 
 	SkeletonHandler		_SkeletonHandler;
 
-	bool				_bDisplaySkeleton;
-
 //-------------------------------------------------
 //Character
 //-------------------------------------------------
@@ -79,13 +78,14 @@ public:
 private:
 	AirwavesConnector	_Connector;
 
-//-------------------------------------------------
-//Config
-//-------------------------------------------------
-public:
-	void loadConfig();
-	void saveConfig();
-private:
-	ofPoint		_exKinectStartPos;
-	float		_exKinectScale;
+////-------------------------------------------------
+////Config
+////-------------------------------------------------
+//public:
+//	void loadConfig();
+//	void saveConfig();
+//private:
+//	ofPoint		_exKinectStartPos;
+//	float		_exKinectScale;
+//	bool		_exIsMirror;
 };

@@ -4,7 +4,7 @@ void CharacterAlien::setupCharacter()
 {
 	//Alien Head
 	CharacterObj	AlienHeadObj_;
-	AlienHeadObj_.setup(NAME_MGR::C_Alien_Head, "Alien/head.mov", ofVec2f(193, 337), 0.6);
+	AlienHeadObj_.setup(NAME_MGR::C_Alien_Head, "Alien/head.mov", ofVec2f(193, 337), 0.5);
 
 	_ObjectList.push_back(AlienHeadObj_);
 
@@ -156,8 +156,8 @@ void CharacterAlien::drawTeaching()
 {
 	ofPushStyle();
 	{
-		ofSetColor(255, 0, 0);
-		ofCircle(100, 100, 50);
+		//ofSetColor(255, 0, 0);
+		//ofCircle(100, 100, 50);
 
 		_AlienCatcher.draw();
 	}
@@ -187,8 +187,8 @@ void CharacterAlien::drawGaming()
 {
 	ofPushStyle();
 	{
-		ofSetColor(0, 255, 0);
-		ofCircle(100, 100, 50);
+		//ofSetColor(0, 255, 0);
+		//ofCircle(100, 100, 50);
 
 		_AlienCatcher.draw();
 	}

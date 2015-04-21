@@ -188,7 +188,7 @@ void AlienCatcher::draw()
 	ofPushMatrix();
 	{	
 		ofTranslate(UFOPos_);
-		_UFO.draw(-_UFO.width/2, 0);
+		_UFO.draw(-_UFO.width/2, -_UFO.height/2);
 	}
 	ofPopMatrix();
 	ofDisableBlendMode();

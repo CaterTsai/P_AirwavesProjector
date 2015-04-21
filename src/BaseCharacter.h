@@ -3,7 +3,6 @@
 
 #include "constParameter.h"
 #include "SkeletonHandler.h"
-#include "NameManager.h"
 #include "ofxHapPlayer.h"
 
 enum eCHARACTER_STATE

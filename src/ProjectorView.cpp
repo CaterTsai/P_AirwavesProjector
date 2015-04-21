@@ -7,7 +7,7 @@ void ProjectorView::setup()
 	ofSetVerticalSync(true);
 
 	//Config
-	this->loadConfig();
+	configLoader::GetInstance()->load();
 
 	//Kinect
 	if(!this->initKinect())
@@ -16,7 +16,7 @@ void ProjectorView::setup()
 		getchar();
 		std::exit(1);
 	}
-	//_SkeletonHandler.setMirror(true);
+	_SkeletonHandler.setMirror(configLoader::GetInstance()->_exIsMirror);
 	_Kinect.startThread();
 
 	//Character
@@ -25,7 +25,8 @@ void ProjectorView::setup()
 	ofAddListener(IBaseCharacter::CharacterEvent, this, &ProjectorView::onCharacterEvent);
 
 	//Connector
-	_Connector.initConnector("127.0.0.1", 2233, 5566);
+	
+	_Connector.initConnector(configLoader::GetInstance()->_exDisplayIP, 2233, 5566);
 	ofAddListener(_Connector.AirwavesConnectorEvent, this, &ProjectorView::onConnectorEvent);
 
 	//Background
@@ -37,12 +38,14 @@ void ProjectorView::setup()
 
 	//Aduio & BGM
 	this->setupAudioMgr();
-	//AudioMgr::GetInstance()->playAudio(AUDIO_NAME_MGR::BGM_WAITING);
-	AudioMgr::GetInstance()->playAudio(AUDIO_NAME_MGR::BGM_GAME);
+	AudioMgr::GetInstance()->playAudio(AUDIO_NAME_MGR::BGM_WAITING);
+	//AudioMgr::GetInstance()->playAudio(AUDIO_NAME_MGR::BGM_GAME);
 
-	_bDisplaySkeleton = true;
-	_SkeletonHandler.setDisplay(_bDisplaySkeleton);
+	_SkeletonHandler.setDisplay(configLoader::GetInstance()->_exDisplaySkeleton);
 
+	_bCtrlMode = false;
+	ofHideCursor();
+	ofToggleFullscreen();
 	_fMainTimer = ofGetElapsedTimef();
 }
 
@@ -88,6 +91,8 @@ void ProjectorView::draw()
 void ProjectorView::exit()
 {
 	this->stopKinect();
+	AudioMgr::GetInstance()->Destroy();
+	configLoader::GetInstance()->Destroy();
 }
 
 //--------------------------------------------------------------
@@ -150,13 +155,16 @@ void ProjectorView::keyPressed(int key)
 		break;
 	case 'f':
 		{
+			_bCtrlMode ^= true;
+			if(_bCtrlMode)
+			{
+				ofShowCursor();
+			}
+			else
+			{
+				ofHideCursor();
+			}
 			ofToggleFullscreen();
-		}
-		break;
-	case 'k':
-		{
-			_bDisplaySkeleton = !_bDisplaySkeleton;
-			_SkeletonHandler.setDisplay(_bDisplaySkeleton);
 		}
 		break;
 	}
@@ -236,8 +244,8 @@ bool ProjectorView::initKinect()
 		_bHaveUser = false;
 		_Kinect.enableSkeleton();
 	}
-	_SkeletonHandler.setStartPos(_exKinectStartPos);
-	_SkeletonHandler.setScale(_exKinectScale);
+	_SkeletonHandler.setStartPos(configLoader::GetInstance()->_exKinectStartPos);
+	_SkeletonHandler.setScale(configLoader::GetInstance()->_exKinectScale);
 
 	return bResult_;
 }
@@ -283,14 +291,13 @@ void ProjectorView::stopKinect()
 //--------------------------------------------------------------
 void ProjectorView::settingKinect(int key)
 {
-#ifdef _DEBUG
 	ofPoint StartPos_ = _SkeletonHandler.getStartPos();
 	float fScale_ = _SkeletonHandler.getScale();
 	switch(key)
 	{
 	case '=':
 		{
-			this->saveConfig();
+			configLoader::GetInstance()->save(_SkeletonHandler.getStartPos(), _SkeletonHandler.getScale());
 			break;
 		}
 	//Translate
@@ -322,7 +329,6 @@ void ProjectorView::settingKinect(int key)
 		_SkeletonHandler.setScale(fScale_ + 0.05);
 		break;
 	}
-#endif //_DEBUG
 }
 #pragma endregion
 
@@ -410,36 +416,36 @@ void ProjectorView::onConnectorEvent(pair<eCONNECTOR_CMD, string>& e)
 #pragma endregion
 
 #pragma region Config
-//-------------------------------------------------
-//Config
-void ProjectorView::loadConfig()
-{
-	ofxXmlSettings	xml_;
-	_exKinectStartPos.set(0, 0);
-	_exKinectScale = 1.0;
-	if(!xml_.loadFile("_config.xml"))
-	{
-		ofLog(OF_LOG_WARNING, "Can't found _config.xml, used default setting");
-		return;
-	}
-
-	
-	_exKinectStartPos.x = xml_.getValue("KINECT_START_X", 0);
-	_exKinectStartPos.y = xml_.getValue("KINECT_START_Y", 1.0);
-	_exKinectScale = xml_.getValue("KINECT_SCALE", 1.0);
-}
-
-//-------------------------------------------------
-void ProjectorView::saveConfig()
-{
-	ofxXmlSettings	xml_;
-	xml_.setValue("KINECT_START_X", _SkeletonHandler.getStartPos().x);
-	xml_.setValue("KINECT_START_Y",_SkeletonHandler.getStartPos().y);
-	xml_.setValue("KINECT_SCALE", _SkeletonHandler.getScale());
-
-	if(xml_.saveFile("_config.xml"))
-	{
-		ofLog(OF_LOG_NOTICE, "Save config file success");
-	}
-}
+////-------------------------------------------------
+////Config
+//void ProjectorView::loadConfig()
+//{
+//	ofxXmlSettings	xml_;
+//	_exKinectStartPos.set(0, 0);
+//	_exKinectScale = 1.0;
+//	if(!xml_.loadFile("_config.xml"))
+//	{
+//		ofLog(OF_LOG_WARNING, "Can't found _config.xml, used default setting");
+//		return;
+//	}
+//
+//	_exKinectStartPos.x = xml_.getValue("KINECT_START_X", 0);
+//	_exKinectStartPos.y = xml_.getValue("KINECT_START_Y", 1.0);
+//	_exKinectScale = xml_.getValue("KINECT_SCALE", 1.0);
+//	_exIsMirror = (xml_.getValue("MIRROR", 0) == 1);
+//}
+//
+////-------------------------------------------------
+//void ProjectorView::saveConfig()
+//{
+//	ofxXmlSettings	xml_;
+//	xml_.setValue("KINECT_START_X", _SkeletonHandler.getStartPos().x);
+//	xml_.setValue("KINECT_START_Y",_SkeletonHandler.getStartPos().y);
+//	xml_.setValue("KINECT_SCALE", _SkeletonHandler.getScale());
+//	xml_.setValue("MIRROR", _exIsMirror);
+//	if(xml_.saveFile("_config.xml"))
+//	{
+//		ofLog(OF_LOG_NOTICE, "Save config file success");
+//	}
+//}
 #pragma endregion

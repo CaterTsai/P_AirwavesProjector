@@ -54,7 +54,7 @@ public:
 	//Mirror
 	inline void setMirror(const bool bValue)
 	{
-		_bIsMirror = true;
+		_bIsMirror = bValue;
 	}
 
 	//for Debug

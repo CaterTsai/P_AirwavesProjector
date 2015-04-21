@@ -1,7 +1,7 @@
 #ifndef AIRWAVES_PROJECTOR_AUDIO_MGR
 #define AIRWAVES_PROJECTOR_AUDIO_MGR
 
-#include "constParameter.h"
+#include "ofMain.h"
 
 class AudioMgr
 {

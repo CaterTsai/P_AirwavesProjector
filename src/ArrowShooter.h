@@ -3,9 +3,10 @@
 
 #include "constParameter.h"
 #include "ofxAnimatableFloat.h"
-#include "SkeletonHandler.h"
 #include "NameManager.h"
 #include "AudioMgr.h"
+#include "ConfigLoader.h"
+#include "SkeletonHandler.h"
 
 enum eSHOOT_TARGET_TYPE
 {

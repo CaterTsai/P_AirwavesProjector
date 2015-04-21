@@ -4,15 +4,15 @@ void CharacterRoma::setupCharacter()
 {
 	//Hat
 	CharacterObj	HatObj_;
-	HatObj_.setup(NAME_MGR::C_Roma_Hat, "Roma/hat.mov", ofVec2f(150, 400), 0.8);
+	HatObj_.setup(NAME_MGR::C_Roma_Hat, "Roma/hat.mov", ofVec2f(150, 500), 0.8);
 
 	//Shield
 	CharacterObj	ShieldObj_;
-	ShieldObj_.setup(NAME_MGR::C_Roma_Shield, "Roma/shield.mov", ofVec2f(60, 197), 0.6);
+	ShieldObj_.setup(NAME_MGR::C_Roma_Shield, "Roma/shield.mov", ofVec2f(30, 197), 0.6);
 
 	//Spear
 	CharacterObj	SpearObj_;
-	SpearObj_.setup(NAME_MGR::C_Roma_Spear, "Roma/spear.mov", ofVec2f(94, 305), 1.3);
+	SpearObj_.setup(NAME_MGR::C_Roma_Spear, "Roma/spear.mov", ofVec2f(94, 360), 1.3);
 
 	_ObjectList.push_back(HatObj_);
 	_ObjectList.push_back(ShieldObj_);
@@ -53,14 +53,14 @@ void CharacterRoma::onArrowHit(bool& bDefence)
 				break;
 			}
 
-			if(_eTeachingState == eTEACHING_START)
+			if(_eTeachingState == eTEACHING_START && _TeachingIndex == 1)
 			{
 				_eTeachingState = eTEACHING_PASS1;
 				pair<string, string> Event_ = make_pair(NAME_MGR::EVENT_TeachingCheck, ofToString(eCHARACTER_ROMA));
 				ofNotifyEvent(IBaseCharacter::CharacterEvent, Event_);
 				_fShootTimer = 5.0;
 			}
-			else if(_eTeachingState == eTEACHING_PASS1)
+			else if(_eTeachingState == eTEACHING_PASS1 && _TeachingIndex == 3)
 			{
 				//Teaching clear!!
 				_eState = eCHARACTER_GAMING;
@@ -104,7 +104,7 @@ void CharacterRoma::updateCharacterObj(CharacterObj& Obj, SkeletonHandler& Skele
 		ofVec2f LeftHand_ = SkeletonHandler.getJoints(_JointType::JointType_HandLeft);
 		ofVec2f LeftElbow_ = SkeletonHandler.getJoints(_JointType::JointType_ElbowLeft);
 
-		float SpearAngle_ = (LeftHand_ - LeftElbow_).angle(ofVec2f(0, -1)) - 5.0;
+		float SpearAngle_ = (LeftHand_ - LeftElbow_).angle(ofVec2f(0, -1)) - 15.0;
 		Obj.update(LeftHand_, SpearAngle_);
 	}
 }
@@ -119,7 +119,9 @@ void CharacterRoma::setupTeaching()
 	if(_TeachingList.empty())
 	{
 		_TeachingList.push_back(make_pair(false, eSHOOT_TARGET_TYPE::eSHOOT_MIDDLE));
+		_TeachingList.push_back(make_pair(false, eSHOOT_TARGET_TYPE::eSHOOT_TOP));
 		_TeachingList.push_back(make_pair(true, eSHOOT_TARGET_TYPE::eSHOOT_MIDDLE));
+		_TeachingList.push_back(make_pair(true, eSHOOT_TARGET_TYPE::eSHOOT_BOTTOM));
 	}
 	_eTeachingState	= eTEACHING_START;
 	_TeachingIndex = 0;
@@ -172,7 +174,7 @@ void CharacterRoma::updateTeaching(float fDelta, SkeletonHandler& SkeletonHandle
 			_ArrowShooter.shoot(
 				Target_,
 				Teaching_.second,
-				2.0,
+				ofRandom(cAUTO_SHOOT_TIME.first, cAUTO_SHOOT_TIME.second),
 				Teaching_.first
 			);
 		}
@@ -180,7 +182,7 @@ void CharacterRoma::updateTeaching(float fDelta, SkeletonHandler& SkeletonHandle
 		{
 			ofLog(OF_LOG_ERROR, e.what());
 		}
-		_fShootTimer = 3.0;
+		_fShootTimer = 1.5;
 
 		//Audio
 		AudioMgr::GetInstance()->playAudio(AUDIO_NAME_MGR::A_ROMA_SHOOT);		
@@ -193,8 +195,8 @@ void CharacterRoma::drawTeaching()
 {
 	ofPushStyle();
 	{
-		ofSetColor(255, 0, 0);
-		ofCircle(100, 100, 50);
+		//ofSetColor(255, 0, 0);
+		//ofCircle(100, 100, 50);
 
 		_ArrowShooter.draw();
 	}
@@ -227,8 +229,8 @@ void CharacterRoma::drawGaming()
 {
 	ofPushStyle();
 	{
-		ofSetColor(0, 255, 0);
-		ofCircle(100, 100, 50);
+		//ofSetColor(0, 255, 0);
+		//ofCircle(100, 100, 50);
 
 		_ArrowShooter.draw();
 	}
