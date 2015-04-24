@@ -4,15 +4,15 @@ void CharacterRoma::setupCharacter()
 {
 	//Hat
 	CharacterObj	HatObj_;
-	HatObj_.setup(NAME_MGR::C_Roma_Hat, "Roma/hat.mov", ofVec2f(150, 500), 0.8);
+	HatObj_.setup(NAME_MGR::C_Roma_Hat, "Roma/hat.mov", configLoader::GetInstance()->_exRomaHatAnchor, configLoader::GetInstance()->_exRomaHatScale);
 
 	//Shield
 	CharacterObj	ShieldObj_;
-	ShieldObj_.setup(NAME_MGR::C_Roma_Shield, "Roma/shield.mov", ofVec2f(30, 197), 0.6);
+	ShieldObj_.setup(NAME_MGR::C_Roma_Shield, "Roma/shield.mov", configLoader::GetInstance()->_exRomaShieldAnchor, configLoader::GetInstance()->_exRomaShieldScale);
 
 	//Spear
 	CharacterObj	SpearObj_;
-	SpearObj_.setup(NAME_MGR::C_Roma_Spear, "Roma/spear.mov", ofVec2f(94, 360), 1.3);
+	SpearObj_.setup(NAME_MGR::C_Roma_Spear, "Roma/spear.mov", configLoader::GetInstance()->_exRomaSpearAnchor, configLoader::GetInstance()->_exRomaSpearScale);
 
 	_ObjectList.push_back(HatObj_);
 	_ObjectList.push_back(ShieldObj_);

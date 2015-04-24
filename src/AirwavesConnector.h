@@ -2,7 +2,6 @@
 #define AIRWAVES_CONNECTOR
 
 #include "ofMain.h"
-#include "ofxNetwork.h"
 #include "protocol.h"
 
 #define cCMD_LENGTH 1000
@@ -14,13 +13,10 @@ const string cEND_TEX = "\x03";
 class AirwavesConnector
 {
 public:
-	void initConnector(string strIP, int iPort, int MyPort);
-	void updateConnector();
-	void closeConnector();
-	void sendCMD(eCONNECTOR_CMD eCMD, string strValue = "");
-
-private:
-	ofxUDPManager	_udpReciver, _udpSender;
+	//virtual void initConnector(string strIP, int iPort, int MyPort);
+	virtual void updateConnector(){};
+	virtual void closeConnector(){};
+	virtual void sendCMD(eCONNECTOR_CMD eCMD, string strValue = ""){};
 
 //-------------------------------
 //Event

@@ -4,6 +4,7 @@
 #include "BaseCharacter.h"
 #include "HeartManager.h"
 
+
 enum eGESTURE_STATE
 {
 	eBOTH_HAND_WAIT,

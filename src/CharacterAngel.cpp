@@ -4,11 +4,11 @@ void CharacterAngel::setupCharacter()
 {
 	//Wings
 	CharacterObj	WingsObj_;
-	WingsObj_.setup(NAME_MGR::C_Angel_Wings, "Angel/wings.mov", ofVec2f(546, 343), 0.7);
+	WingsObj_.setup(NAME_MGR::C_Angel_Wings, "Angel/wings.mov", configLoader::GetInstance()->_exAngelWingsAnchor, configLoader::GetInstance()->_exAngelWingsScale);
 
 	//Ring
 	CharacterObj	RingObj_;
-	RingObj_.setup(NAME_MGR::C_Angel_Ring, "Angel/ring.mov", ofVec2f(156, 240), 0.2);
+	RingObj_.setup(NAME_MGR::C_Angel_Ring, "Angel/ring.mov", configLoader::GetInstance()->_exAngelRingAnchor, configLoader::GetInstance()->_exAngelRingScale);
 
 	_ObjectList.push_back(WingsObj_);
 	_ObjectList.push_back(RingObj_);

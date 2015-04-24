@@ -115,7 +115,7 @@ void AlienCatcher::update(float fDelta, float PosX)
 	auto AlienIter_ = _AlienList.begin();
 	while(AlienIter_ != _AlienList.end())
 	{
-		AlienIter_->update(fDelta, fUFOPosX_, _UFO.height * 1.5, _IntervalSizeHalf);
+		AlienIter_->update(fDelta, fUFOPosX_, _UFO.height, _IntervalSizeHalf);
 
 		if(AlienIter_->eState == eALIEN_CAN_REMOVE)
 		{
@@ -178,7 +178,7 @@ void AlienCatcher::draw()
 	//UFO Light
 	ofSetColor(255);
 	ofVec2f UFOPos_(_AnimUFOPosX.getCurrentValue(), 0);
-	_UFOLight.draw(UFOPos_.x - _UFOLight.width/2, 100);
+	_UFOLight.draw(UFOPos_.x - _UFOLight.width/2, 50);
 	
 	ofDisableBlendMode();
 

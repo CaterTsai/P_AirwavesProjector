@@ -17,6 +17,8 @@ public:
 	bool		_exIsMirror;
 	bool		_exDisplaySkeleton;
 
+	bool		_exUseSerial;
+	string		_exCOM;
 	string		_exDisplayIP;
 
 	//Roma

@@ -2,6 +2,7 @@
 #define AIRWAVE_PROJECT_BASE_CHARACTER
 
 #include "constParameter.h"
+#include "configLoader.h"
 #include "SkeletonHandler.h"
 #include "ofxHapPlayer.h"
 
@@ -14,6 +15,7 @@ enum eCHARACTER_STATE
 
 enum eTEACHING_STATE
 {
+	eTEACHING_WAIT,
 	eTEACHING_START,
 	eTEACHING_PASS1,
 	eTEACHING_FINISH

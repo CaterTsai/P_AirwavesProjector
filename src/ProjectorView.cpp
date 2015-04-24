@@ -25,9 +25,17 @@ void ProjectorView::setup()
 	ofAddListener(IBaseCharacter::CharacterEvent, this, &ProjectorView::onCharacterEvent);
 
 	//Connector
-	
-	_Connector.initConnector(configLoader::GetInstance()->_exDisplayIP, 2233, 5566);
-	ofAddListener(_Connector.AirwavesConnectorEvent, this, &ProjectorView::onConnectorEvent);
+	if(configLoader::GetInstance()->_exUseSerial)
+	{
+		ofPtr<SerialConnector> pConnector_ = ofPtr<SerialConnector>(new SerialConnector(configLoader::GetInstance()->_exCOM));
+		_Connector = pConnector_;
+	}
+	else
+	{
+		ofPtr<UDPConnector> pConnector_ = ofPtr<UDPConnector>(new UDPConnector(configLoader::GetInstance()->_exDisplayIP, 2233, 5566));
+		_Connector = pConnector_;
+	}
+	ofAddListener(_Connector->AirwavesConnectorEvent, this, &ProjectorView::onConnectorEvent);
 
 	//Background
 	_bDisplayLight = false;
@@ -39,7 +47,6 @@ void ProjectorView::setup()
 	//Aduio & BGM
 	this->setupAudioMgr();
 	AudioMgr::GetInstance()->playAudio(AUDIO_NAME_MGR::BGM_WAITING);
-	//AudioMgr::GetInstance()->playAudio(AUDIO_NAME_MGR::BGM_GAME);
 
 	_SkeletonHandler.setDisplay(configLoader::GetInstance()->_exDisplaySkeleton);
 
@@ -65,7 +72,7 @@ void ProjectorView::update()
 	_CharacterMgr.updateCharacterMgr(fDelta_, _SkeletonHandler);
 
 	//Connector
-	_Connector.updateConnector();
+	_Connector->updateConnector();
 }
 
 //--------------------------------------------------------------
@@ -144,6 +151,12 @@ void ProjectorView::keyPressed(int key)
 	//		_CharacterMgr.play();
 	//	}
 	//	break;
+	case 'r':
+		{
+			_CharacterMgr.stop();
+			AudioMgr::GetInstance()->stopAudio(AUDIO_NAME_MGR::BGM_GAME);
+			AudioMgr::GetInstance()->playAudio(AUDIO_NAME_MGR::BGM_WAITING);
+		}
 	case 's':
 		{
 			if(!_bHaveUser)
@@ -338,15 +351,15 @@ void ProjectorView::onCharacterEvent(pair<string, string>& e)
 {
 	if(e.first == NAME_MGR::EVENT_TeachingCheck)
 	{
-		_Connector.sendCMD(eCONNECTOR_CMD::eP2D_TEACHING_CHECK, e.second);
+		_Connector->sendCMD(eCONNECTOR_CMD::eP2D_TEACHING_CHECK, e.second);
 	}
 	else if(e.first == NAME_MGR::EVENT_TeachingFinish)
 	{
-		_Connector.sendCMD(eCONNECTOR_CMD::eP2D_TEACHING_END, e.second);
+		_Connector->sendCMD(eCONNECTOR_CMD::eP2D_TEACHING_END, e.second);
 	}
 	else if(e.first == NAME_MGR::EVENT_TakePicture)
 	{
-		_Connector.sendCMD(eCONNECTOR_CMD::eP2D_TAKE_PICTURE, e.second);
+		_Connector->sendCMD(eCONNECTOR_CMD::eP2D_TAKE_PICTURE, e.second);
 	}
 }
 #pragma endregion

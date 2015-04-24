@@ -42,6 +42,9 @@ private:
 	virtual void setupTeaching();
 	virtual void updateTeaching(float fDelta, SkeletonHandler& SkeletonHandler) override;
 	virtual void drawTeaching() override;
+	
+private:
+	float		_fStartTimer;
 
 //----------------------------------
 //Gaming

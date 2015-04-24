@@ -4,7 +4,8 @@
 #include "constParameter.h"
 #include "SkeletonHandler.h"
 #include "AudioMgr.h"
-#include "AirwavesConnector.h"
+#include "UDPConnector.h"
+#include "SerialConnector.h"
 #include "ofxCTKinectV2.h"
 #include "ofxXmlSettings.h"
 #include "ofxAnimatableFloat.h"
@@ -76,7 +77,7 @@ private:
 public:
 	void onConnectorEvent(pair<eCONNECTOR_CMD, string>& e);
 private:
-	AirwavesConnector	_Connector;
+	ofPtr<AirwavesConnector>	_Connector;
 
 ////-------------------------------------------------
 ////Config

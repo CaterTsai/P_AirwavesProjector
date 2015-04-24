@@ -17,6 +17,8 @@ void configLoader::load()
 	_exKinectScale = xml_.getValue("KINECT_SCALE", 1.0);
 	_exIsMirror = (xml_.getValue("MIRROR", 0) == 1);
 	_exDisplaySkeleton = (xml_.getValue("SKELETON", 0) == 1);
+	_exUseSerial = (xml_.getValue("USE_SERIAL", 0, 0) == 1);
+	_exCOM = xml_.getValue("COM", "COM4", 0);
 	_exDisplayIP = xml_.getValue("DISPLAY_IP", "127.0.0.1");
 	//Roma
 	_exRomaHatAnchor.set(xml_.getValue("ROMA:HAT:X", 150), xml_.getValue("ROMA:HAT:Y", 500));
@@ -47,6 +49,8 @@ void configLoader::save(ofVec2f StartPos, float fScale)
 	xml_.setValue("MIRROR", _exIsMirror);
 	xml_.setValue("SKELETON", _exDisplaySkeleton);
 	xml_.setValue("DISPLAY_IP", _exDisplayIP);
+	xml_.setValue("USE_SERIAL", _exUseSerial);
+	xml_.setValue("COM", _exCOM);
 
 	//Roma
 	xml_.setValue("ROMA:HAT:X", _exRomaHatAnchor.x);

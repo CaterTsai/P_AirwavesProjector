@@ -4,7 +4,7 @@ void CharacterAlien::setupCharacter()
 {
 	//Alien Head
 	CharacterObj	AlienHeadObj_;
-	AlienHeadObj_.setup(NAME_MGR::C_Alien_Head, "Alien/head.mov", ofVec2f(193, 337), 0.5);
+	AlienHeadObj_.setup(NAME_MGR::C_Alien_Head, "Alien/head.mov", configLoader::GetInstance()->_exAlienHeadAnchor, configLoader::GetInstance()->_exAlienHeadScale);
 
 	_ObjectList.push_back(AlienHeadObj_);
 
@@ -78,7 +78,7 @@ float CharacterAlien::getCtrlPos(SkeletonHandler& SkeletonHandler)
 
 			float fMin_ = ShoulderLeft_ .x - abs(ShoulderLeft_.x - ShoulderRight_.x);
 			float fMax_ = ShoulderRight_.x;
-			CtrlPos_ = ofMap(LeftHand_.x, fMin_, fMax_, 0, cWINDOW_WIDTH);
+			CtrlPos_ = ofMap(LeftHand_.x, fMin_, fMax_, 0, cWINDOW_WIDTH, true);
 
 			if(LeftHand_.y > ShoulderLeft_.y || LeftHand_.y > ShoulderRight_.y)
 			{
@@ -94,7 +94,7 @@ float CharacterAlien::getCtrlPos(SkeletonHandler& SkeletonHandler)
 
 			float fMin_ = ShoulderLeft_ .x;
 			float fMax_ = ShoulderRight_.x + abs(ShoulderLeft_.x - ShoulderRight_.x);
-			CtrlPos_ = ofMap(RightHand_.x, fMin_, fMax_, 0, cWINDOW_WIDTH);
+			CtrlPos_ = ofMap(RightHand_.x, fMin_, fMax_, 0, cWINDOW_WIDTH, true);
 			
 			if(RightHand_.y > ShoulderLeft_.y || RightHand_.y > ShoulderRight_.y)
 			{
@@ -107,7 +107,15 @@ float CharacterAlien::getCtrlPos(SkeletonHandler& SkeletonHandler)
 	if(_eHandState != eNO_LOCKON && _eTeachingState == eTEACHING_START)
 	{
 		_eTeachingState = eTEACHING_PASS1;
-		_AlienCatcher.addAlien(200); //TODO Change position relative with UFO?
+
+		if(CtrlPos_ > (cWINDOW_WIDTH/2))
+		{
+			_AlienCatcher.addAlien(CtrlPos_ - cALINE_MIN_DIST);
+		}
+		else
+		{
+			_AlienCatcher.addAlien(CtrlPos_ + cALINE_MIN_DIST);
+		}
 		
 		//Event
 		pair<string, string> Event_ = make_pair(NAME_MGR::EVENT_TeachingCheck, ofToString(eCHARACTER_ALIEN));
@@ -137,18 +145,30 @@ void CharacterAlien::setupTeaching()
 {
 	//this->addTeachingAlien();
 	_eHandState = eNO_LOCKON;
-	_eTeachingState	=	eTEACHING_START;
+	_eTeachingState	=	eTEACHING_WAIT;
 	_iPictureCounter = 0;
-	_fPictureTimer = _fPirecureInterval = cANGEL_PICTURE_INTERVAL;
+	_fPictureTimer = _fPirecureInterval = cALIEN_PICTURE_INTERVAL;
+	_fStartTimer = 3.0;
 }
 
 //--------------------------------------------------------------
 void CharacterAlien::updateTeaching(float fDelta, SkeletonHandler& SkeletonHandler)
-{
+{	
 	float fCtrlX_ = this->getCtrlPos(SkeletonHandler);
 	_AlienCatcher.update(fDelta, fCtrlX_);
 
-	this->takePicture(fDelta);
+	if(_eTeachingState != eTEACHING_WAIT)
+	{
+		this->takePicture(fDelta);
+	}
+	else
+	{
+		_fStartTimer -= fDelta;
+		if(_fStartTimer <= 0.0)
+		{
+			_eTeachingState = eTEACHING_START;
+		}
+	}
 }
 
 //--------------------------------------------------------------
