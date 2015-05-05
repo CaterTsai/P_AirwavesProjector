@@ -370,6 +370,11 @@ void ProjectorView::onConnectorEvent(pair<eCONNECTOR_CMD, string>& e)
 {
 	switch(e.first)
 	{
+	case eD2P_ARE_U_READY:
+		{
+			_Connector->sendCMD(eCONNECTOR_CMD::eP2D_IM_READY);
+		}
+		break;
 	case eD2P_SET_CHARACTOR:
 		{	
 			eCHARACTER_TYPE eType_ = (eCHARACTER_TYPE)ofToInt(e.second);

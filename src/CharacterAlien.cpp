@@ -104,17 +104,17 @@ float CharacterAlien::getCtrlPos(SkeletonHandler& SkeletonHandler)
 		break;
 	}
 
-	if(_eHandState != eNO_LOCKON && _eTeachingState == eTEACHING_START)
+	if(_eHandState != eNO_LOCKON && _eTeachingState == eTEACHING_START && CtrlPos_ >= 0)
 	{
 		_eTeachingState = eTEACHING_PASS1;
-
-		if(CtrlPos_ > (cWINDOW_WIDTH/2))
+		float fUFOPos_ = _AlienCatcher.getUFOPos();
+		if(fUFOPos_ > (cWINDOW_WIDTH/2))
 		{
-			_AlienCatcher.addAlien(CtrlPos_ - cALINE_MIN_DIST);
+			_AlienCatcher.addAlien(fUFOPos_ - cALINE_MIN_DIST);
 		}
 		else
 		{
-			_AlienCatcher.addAlien(CtrlPos_ + cALINE_MIN_DIST);
+			_AlienCatcher.addAlien(fUFOPos_ + cALINE_MIN_DIST);
 		}
 		
 		//Event

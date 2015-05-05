@@ -46,6 +46,8 @@ const float cALIEN_SHORTEST_TIME = 5.0;
 const float cALIEN_PICTURE_INTERVAL = cALIEN_SHORTEST_TIME/cPICTURE_NUM;
 const int cALIEN_MAX_NUM = 20;
 const float cALINE_MIN_DIST = (cWINDOW_WIDTH/2.0 * 0.9);
+const int cALIEN_UP = 80;
+
 
 //Angel
 const float cHEART_FADEOUT_TIME = 1.0;

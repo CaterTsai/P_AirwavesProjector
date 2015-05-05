@@ -46,26 +46,13 @@ void CharacterAngel::startGame()
 //--------------------------------------------------------------
 void CharacterAngel::onHeartHit(string& e)
 {
-	if(_eState == eCHARACTER_TEACHING)
+	if(_eState == eCHARACTER_TEACHING && _eTeachingState == eTEACHING_PASS1)
 	{
-		if(_eTeachingState == eTEACHING_START)
-		{
-			//Event
-			pair<string, string> Event_ = make_pair(NAME_MGR::EVENT_TeachingCheck, ofToString(eCHARACTER_ANGEL));
-			ofNotifyEvent(IBaseCharacter::CharacterEvent, Event_);
+		_eTeachingState = eTEACHING_FINISH;
 
-			_eTeachingState = eTEACHING_PASS1;
-			_bStartTimer = true;
-			_fTeachingTimer = 3.0;
-		}
-		else if(_eTeachingState == eTEACHING_PASS1)
-		{
-			_eTeachingState = eTEACHING_FINISH;
-
-			//Event
-			pair<string, string> Event_ = make_pair(NAME_MGR::EVENT_TeachingFinish, ofToString(eCHARACTER_ANGEL));
-			ofNotifyEvent(IBaseCharacter::CharacterEvent, Event_);
-		}
+		//Event
+		pair<string, string> Event_ = make_pair(NAME_MGR::EVENT_TeachingFinish, ofToString(eCHARACTER_ANGEL));
+		ofNotifyEvent(IBaseCharacter::CharacterEvent, Event_);
 	}
 }
 
@@ -169,9 +156,10 @@ void CharacterAngel::updateCharacterObj(CharacterObj& Obj, SkeletonHandler& Skel
 //--------------------------------------------------------------
 void CharacterAngel::setupTeaching()
 {
-	_fTeachingTimer = 1.0;
 	_bStartTimer = true;
-	_eTeachingState = eTEACHING_START;
+	_fTeachingTimer = 2.0;
+	//_bStartTimer = true;
+	_eTeachingState = eTEACHING_WAIT;
 	_iPictureCounter = 0;
 	_fPictureTimer = _fPirecureInterval = cANGEL_PICTURE_INTERVAL;
 }
@@ -191,41 +179,65 @@ void CharacterAngel::updateTeaching(float fDelta, SkeletonHandler& SkeletonHandl
 	{
 		_HeartManager.clear();
 		_eState = eCHARACTER_GAMING;
+		return;
 	}
-
-	if(gestureCheck(SkeletonHandler))
+	else if(_eTeachingState == eTEACHING_START || _eTeachingState == eTEACHING_PASS1)
 	{
-		//add fly heart
-		ofVec2f Body_ = SkeletonHandler.getJoints(_JointType::JointType_SpineMid);
+		if(gestureCheck(SkeletonHandler))
+		{
+			//add fly heart
+			ofVec2f Body_ = SkeletonHandler.getJoints(_JointType::JointType_SpineMid);
 		
-		int iNum_ = (rand() % (cFLYING_HEART_LIMIT.second - cFLYING_HEART_LIMIT.first)) + cFLYING_HEART_LIMIT.first;
-		ofVec2f Direction_ = ofVec2f(0, -1).rotate(ofRandom(0, 359));
-		for(int idx_ = 0; idx_ < iNum_; ++idx_)
-		{
-			_HeartManager.addFlying(Body_, Direction_ * cWINDOW_WIDTH, ofRandom(cFLYING_HEART_DURATION.first, cFLYING_HEART_DURATION.second));
-			Direction_.rotate(ofRandom(cFLYING_HEART_DEGREE.first, cFLYING_HEART_DEGREE.second));
-			Direction_.normalize();
-		}
+			int iNum_ = (rand() % (cFLYING_HEART_LIMIT.second - cFLYING_HEART_LIMIT.first)) + cFLYING_HEART_LIMIT.first;
+			ofVec2f Direction_ = ofVec2f(0, -1).rotate(ofRandom(0, 359));
+			for(int idx_ = 0; idx_ < iNum_; ++idx_)
+			{
+				_HeartManager.addFlying(Body_, Direction_ * cWINDOW_WIDTH, ofRandom(cFLYING_HEART_DURATION.first, cFLYING_HEART_DURATION.second));
+				Direction_.rotate(ofRandom(cFLYING_HEART_DEGREE.first, cFLYING_HEART_DEGREE.second));
+				Direction_.normalize();
+			}
 
-		//add special heart
-		ofVec2f Pos_;
-		if(_HeartManager.getFloatingPos(0, Pos_))
-		{
-			_HeartManager.addFlying(Body_, Pos_, 1.5);
-		}
-	}
+			//add special heart
+			ofVec2f Pos_;
+			if(_HeartManager.getFloatingPos(0, Pos_))
+			{
+				_HeartManager.addFlying(Body_, Pos_, 1.5);
+			}
 
-	if(_bStartTimer)
-	{
-		_fTeachingTimer -= fDelta;
-		if(_fTeachingTimer < 0.0)
-		{
-			this->addFloatingHeart(cTEACHING_FLOATING_NUM);
-			_bStartTimer = false;
+			if(_eTeachingState == eTEACHING_START)
+			{
+				//Event
+				pair<string, string> Event_ = make_pair(NAME_MGR::EVENT_TeachingCheck, ofToString(eCHARACTER_ANGEL));
+				ofNotifyEvent(IBaseCharacter::CharacterEvent, Event_);
+
+				_eTeachingState = eTEACHING_PASS1;
+				_bStartTimer = true;
+				_fTeachingTimer = 2.0;
+			}
 		}
 	}
 
 	this->takePicture(fDelta);
+
+	//Timer
+	if(_bStartTimer)
+	{
+		_fTeachingTimer -= fDelta;
+		if(_fTeachingTimer > 0.0)
+		{
+			return;
+		}
+
+		_bStartTimer = false;
+		if(_eTeachingState == eTEACHING_WAIT)
+		{
+			_eTeachingState = eTEACHING_START;
+		}
+		else if(_eTeachingState == eTEACHING_PASS1)
+		{
+			this->addFloatingHeart(cTEACHING_FLOATING_NUM);
+		}
+	}
 }
 
 //--------------------------------------------------------------

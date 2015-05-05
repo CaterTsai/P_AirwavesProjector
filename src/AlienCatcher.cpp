@@ -24,7 +24,7 @@ void stAlienPoint::update(float fDelta, float UFOPosX, float fScaleLimit, float 
 		break;
 	case eALIEN_FLY:
 		{
-			Position.y = cWINDOW_HEIGHT - (AnimUp.getCurrentValue() * cWINDOW_HEIGHT);
+			Position.y = (cWINDOW_HEIGHT - cALIEN_UP) - (AnimUp.getCurrentValue() * (cWINDOW_HEIGHT - cALIEN_UP));
 			Position.x = UFOPosX;
 			fScale = AnimScale.getCurrentValue();
 			if(Position.y < fScaleLimit)
@@ -216,7 +216,7 @@ void AlienCatcher::clear()
 //--------------------------------------------------------------
 void AlienCatcher::addAlien(float fPosX)
 {	
-	stAlienPoint	NewAlien_(ofVec2f(fPosX, cWINDOW_HEIGHT));
+	stAlienPoint	NewAlien_(ofVec2f(fPosX, cWINDOW_HEIGHT - cALIEN_UP));
 	_AlienList.push_back(NewAlien_);
 }
 

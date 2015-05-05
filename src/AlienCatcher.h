@@ -73,6 +73,11 @@ public:
 			_fCreateTimer = 1.0;
 		}
 	}
+
+	inline float getUFOPos()
+	{
+		return _AnimUFOPosX.getCurrentValue();
+	}
 private:
 	inline int getIntervalID(float PosX)
 	{

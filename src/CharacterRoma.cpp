@@ -118,10 +118,10 @@ void CharacterRoma::setupTeaching()
 	_fShootTimer = 3.0;
 	if(_TeachingList.empty())
 	{
+		_TeachingList.push_back(make_pair(true, eSHOOT_TARGET_TYPE::eSHOOT_MIDDLE));
+		_TeachingList.push_back(make_pair(true, eSHOOT_TARGET_TYPE::eSHOOT_TOP));
 		_TeachingList.push_back(make_pair(false, eSHOOT_TARGET_TYPE::eSHOOT_MIDDLE));
 		_TeachingList.push_back(make_pair(false, eSHOOT_TARGET_TYPE::eSHOOT_TOP));
-		_TeachingList.push_back(make_pair(true, eSHOOT_TARGET_TYPE::eSHOOT_MIDDLE));
-		_TeachingList.push_back(make_pair(true, eSHOOT_TARGET_TYPE::eSHOOT_BOTTOM));
 	}
 	_eTeachingState	= eTEACHING_START;
 	_TeachingIndex = 0;
