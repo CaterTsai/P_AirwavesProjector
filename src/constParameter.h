@@ -48,7 +48,6 @@ const int cALIEN_MAX_NUM = 20;
 const float cALINE_MIN_DIST = (cWINDOW_WIDTH/2.0 * 0.9);
 const int cALIEN_UP = 80;
 
-
 //Angel
 const float cHEART_FADEOUT_TIME = 1.0;
 const pair<float, float>	cHEART_SCALE = make_pair(0.2, 0.25);
@@ -64,4 +63,13 @@ const int cGAMING_FLOATING_NUM = 3;
 const int cMAX_FLOATING_HEART = 20;
 const float cANGEL_SHORTEST_TIME = 10.0;
 const float cANGEL_PICTURE_INTERVAL = cANGEL_SHORTEST_TIME/cPICTURE_NUM;
+
+//Money
+const float cSYCEE_CATCH_DISTANCE_Y = 50;
+const float cSYCEE_CATCH_DISTANCE_X = 80;
+const pair<float, float>	cSYCEE_FALLING_DURACTION = make_pair(0.5, 1.5);
+const pair<float, float>	cSYCEE_CREATE_CURATION = make_pair(0.2, 0.5);
+const float cSYCEE_SHORTEST_TIME = 5.0;
+const float cSYCEE_PICTURE_INTERVAL = cSYCEE_SHORTEST_TIME/cPICTURE_NUM;
+
 #endif // !AIRWAVES_PROJECTOR_PARAMETER

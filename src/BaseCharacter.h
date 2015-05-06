@@ -35,24 +35,32 @@ public:
 	{
 		return _Name;
 	}
-
 	inline ofPoint getDrawPos() const
 	{
 		return _DrawPos;
 	}
-
 	inline ofRectangle getScaleRect() const
 	{
 		return ofRectangle(0, 0, _fScaleWidth, _fScaleHeight);
 	}
+	inline void setDisplay(bool bValue)
+	{
+		_bDisplay = bValue;
+	}
+	inline bool getDisplay() const
+	{
+		return _bDisplay;
+	}
 
 private:
-	ofVideoPlayer	_obj;	//TODO: Image -> Video
+	ofVideoPlayer	_obj;
 
 	ofPoint		_DrawPos;
 	float		_fRotate;
 	ofPoint		_ScaleAnchor;
 	float		_fScaleWidth, _fScaleHeight;
+
+	bool		_bDisplay;
 
 	//Fix
 	string		_Name;

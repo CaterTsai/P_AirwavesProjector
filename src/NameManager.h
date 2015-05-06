@@ -24,6 +24,11 @@ namespace NAME_MGR
 	CREATE_VALUE(C_Angel_Ring);
 	CREATE_VALUE(C_Angel_Wings);
 
+	//Roma
+	CREATE_VALUE(C_Money_Hat);
+	CREATE_VALUE(C_Money_Cup_L);
+	CREATE_VALUE(C_Money_Cup_R);
+
 //---------------------------------------
 // Character Event
 //---------------------------------------

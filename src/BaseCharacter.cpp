@@ -29,6 +29,11 @@ void CharacterObj::update(ofPoint DrawPos, float fRotate)
 //--------------------------------------------------------------
 void CharacterObj::draw()
 {
+	if(!_bDisplay)
+	{
+		return;
+	}
+
 	ofPushStyle();
 	ofPushMatrix();
 	{

@@ -216,7 +216,6 @@ void CharacterAngel::updateTeaching(float fDelta, SkeletonHandler& SkeletonHandl
 			}
 		}
 	}
-
 	this->takePicture(fDelta);
 
 	//Timer

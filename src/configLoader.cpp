@@ -20,6 +20,7 @@ void configLoader::load()
 	_exUseSerial = (xml_.getValue("USE_SERIAL", 0, 0) == 1);
 	_exCOM = xml_.getValue("COM", "COM4", 0);
 	_exDisplayIP = xml_.getValue("DISPLAY_IP", "127.0.0.1");
+
 	//Roma
 	_exRomaHatAnchor.set(xml_.getValue("ROMA:HAT:X", 150), xml_.getValue("ROMA:HAT:Y", 500));
 	_exRomaHatScale = xml_.getValue("ROMA:HAT:SCALE", 0.8);
@@ -37,6 +38,12 @@ void configLoader::load()
 	//Alien
 	_exAlienHeadAnchor.set(xml_.getValue("ALIEN:HEAD:X", 193), xml_.getValue("ALIEN:HEAD:Y", 337));
 	_exAlienHeadScale = xml_.getValue("ALIEN:HEAD:SCALE", 0.5);
+
+	//Money
+	_exMoneyHatAnchor.set(xml_.getValue("MONEY:HAT:X", 546), xml_.getValue("MONEY:HAT:Y", 343));
+	_exMoneyHatScale = xml_.getValue("MONEY:HAT:SCALE", 0.7);
+	_exMoneyCupAnchor.set(xml_.getValue("MONEY:CUP:X", 156), xml_.getValue("MONEY:CUP:Y", 240));
+	_exMoneyCupScale = xml_.getValue("MONEY:CUP:SCALE", 0.2);
 }
 
 //--------------------------------------------------------------
@@ -75,6 +82,14 @@ void configLoader::save(ofVec2f StartPos, float fScale)
 	xml_.setValue("ALIEN:HEAD:X", _exAlienHeadAnchor.x);
 	xml_.setValue("ALIEN:HEAD:Y", _exAlienHeadAnchor.y);
 	xml_.setValue("ALIEN:HEAD:SCALE", _exAlienHeadScale);
+
+	//Money
+	xml_.setValue("MONEY:HAT:X", _exMoneyHatAnchor.x);
+	xml_.setValue("MONEY:HAT:Y", _exMoneyHatAnchor.y);
+	xml_.setValue("MONEY:HAT:SCALE", _exMoneyHatScale);
+	xml_.setValue("MONEY:CUP:X", _exMoneyHatAnchor.x);
+	xml_.setValue("MONEY:CUP:Y", _exMoneyHatAnchor.y);
+	xml_.setValue("MONEY:CUP:SCALE", _exMoneyHatScale);
 
 	if(xml_.saveFile("_config.xml"))
 	{

@@ -141,16 +141,16 @@ void ProjectorView::keyPressed(int key)
 			_CharacterMgr.play();
 		}
 		break;
-	//case '4':
-	//	{
-	//		if(!_bHaveUser)
-	//		{
-	//			return;
-	//		}
-	//		_CharacterMgr.setCharacter(eCHARACTER_MONEY, _SkeletonHandler.getBodySize());
-	//		_CharacterMgr.play();
-	//	}
-	//	break;
+	case '4':
+		{
+			if(!_bHaveUser)
+			{
+				return;
+			}
+			_CharacterMgr.setCharacter(eCHARACTER_MONEY, _SkeletonHandler.getBodySize());
+			_CharacterMgr.play();
+		}
+		break;
 	case 'r':
 		{
 			_CharacterMgr.stop();

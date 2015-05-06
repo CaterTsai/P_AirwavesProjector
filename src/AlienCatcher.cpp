@@ -147,9 +147,7 @@ void AlienCatcher::update(float fDelta, float PosX)
 		{
 			this->addAlien();
 		}
-		
 	}
-	
 }
 
 //--------------------------------------------------------------

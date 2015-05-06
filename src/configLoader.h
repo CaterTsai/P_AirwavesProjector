@@ -33,6 +33,10 @@ public:
 	ofVec2f		_exAlienHeadAnchor;
 	float		_exAlienHeadScale;
 
+	//Money
+	ofVec2f		_exMoneyHatAnchor, _exMoneyCupAnchor;
+	float		_exMoneyHatScale, _exMoneyCupScale;
+
 //-------------------
 //Singleton
 //-------------------
