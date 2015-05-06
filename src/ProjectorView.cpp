@@ -432,38 +432,3 @@ void ProjectorView::onConnectorEvent(pair<eCONNECTOR_CMD, string>& e)
 	}
 }
 #pragma endregion
-
-#pragma region Config
-////-------------------------------------------------
-////Config
-//void ProjectorView::loadConfig()
-//{
-//	ofxXmlSettings	xml_;
-//	_exKinectStartPos.set(0, 0);
-//	_exKinectScale = 1.0;
-//	if(!xml_.loadFile("_config.xml"))
-//	{
-//		ofLog(OF_LOG_WARNING, "Can't found _config.xml, used default setting");
-//		return;
-//	}
-//
-//	_exKinectStartPos.x = xml_.getValue("KINECT_START_X", 0);
-//	_exKinectStartPos.y = xml_.getValue("KINECT_START_Y", 1.0);
-//	_exKinectScale = xml_.getValue("KINECT_SCALE", 1.0);
-//	_exIsMirror = (xml_.getValue("MIRROR", 0) == 1);
-//}
-//
-////-------------------------------------------------
-//void ProjectorView::saveConfig()
-//{
-//	ofxXmlSettings	xml_;
-//	xml_.setValue("KINECT_START_X", _SkeletonHandler.getStartPos().x);
-//	xml_.setValue("KINECT_START_Y",_SkeletonHandler.getStartPos().y);
-//	xml_.setValue("KINECT_SCALE", _SkeletonHandler.getScale());
-//	xml_.setValue("MIRROR", _exIsMirror);
-//	if(xml_.saveFile("_config.xml"))
-//	{
-//		ofLog(OF_LOG_NOTICE, "Save config file success");
-//	}
-//}
-#pragma endregion

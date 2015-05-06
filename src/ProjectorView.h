@@ -79,14 +79,4 @@ public:
 private:
 	ofPtr<AirwavesConnector>	_Connector;
 
-////-------------------------------------------------
-////Config
-////-------------------------------------------------
-//public:
-//	void loadConfig();
-//	void saveConfig();
-//private:
-//	ofPoint		_exKinectStartPos;
-//	float		_exKinectScale;
-//	bool		_exIsMirror;
 };
