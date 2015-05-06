@@ -100,11 +100,6 @@ void SerialConnector::closeConnector()
 //--------------------------------------------------------------
 void SerialConnector::sendCMD(eCONNECTOR_CMD eCMD, string strValue)
 {
-	if(!_bSetupSerial)
-	{
-		return;
-	}
-
 	string CMD_ = cSTART_TEX + ofToString(eCMD) + cVALUE_TEX + strValue + cEND_TEX;
 	
 	_Serial.writeBytes((unsigned char*)CMD_.c_str(), CMD_.size());

@@ -5,7 +5,6 @@ typedef enum eCONNECTOR_CMD
 {
 	//Display to Projector
 	eD2P_CMD			=	100
-	,eD2P_ARE_U_READY
 	,eD2P_SET_CHARACTOR
 	,eD2P_TEACHING_TIMEOUT
 	,eD2P_GAME_START
@@ -15,7 +14,6 @@ typedef enum eCONNECTOR_CMD
 
 	//Projector to Display
 	,eP2D_CMD			=	200
-	,eP2D_IM_READY
 	,eP2D_TAKE_PICTURE
 	,eP2D_TEACHING_CHECK
 	,eP2D_TEACHING_END
