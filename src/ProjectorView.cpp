@@ -147,6 +147,7 @@ void ProjectorView::keyPressed(int key)
 			{
 				return;
 			}
+			_CharacterMgr.stop();
 			_CharacterMgr.setCharacter(eCHARACTER_MONEY, _SkeletonHandler.getBodySize());
 			_CharacterMgr.play();
 		}
@@ -243,6 +244,8 @@ void ProjectorView::setupAudioMgr()
 
 	AudioMgr::GetInstance()->addAduio(AUDIO_NAME_MGR::A_ANGEL_TOUCH, "Audios/angel_touch.wav");
 	AudioMgr::GetInstance()->addAduio(AUDIO_NAME_MGR::A_ANGEL_FLY, "Audios/angel_fly.wav");
+
+	AudioMgr::GetInstance()->addAduio(AUDIO_NAME_MGR::A_MONEY_CATCH, "Audios/money_catch.wav");
 }
 #pragma endregion
 

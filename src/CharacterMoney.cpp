@@ -8,8 +8,8 @@ void CharacterMoney::setupCharacter()
 	
 	//Cup
 	CharacterObj	LeftCupObj_, RightCupObj_;
-	LeftCupObj_.setup(NAME_MGR::C_Money_Cup_L, "Money/cup1.mov", configLoader::GetInstance()->_exMoneyCupAnchor, configLoader::GetInstance()->_exMoneyCupScale);
-	RightCupObj_.setup(NAME_MGR::C_Money_Cup_R, "Money/cup2.mov", configLoader::GetInstance()->_exMoneyCupAnchor, configLoader::GetInstance()->_exMoneyCupScale);
+	LeftCupObj_.setup(NAME_MGR::C_Money_Cup_L, "Money/cup1.mov", configLoader::GetInstance()->_exMoneyCupLAnchor, configLoader::GetInstance()->_exMoneyCupLScale);
+	RightCupObj_.setup(NAME_MGR::C_Money_Cup_R, "Money/cup2.mov", configLoader::GetInstance()->_exMoneyCupRAnchor, configLoader::GetInstance()->_exMoneyCupRScale);
 		
 	_ObjectList.push_back(HatObj_);
 	_ObjectList.push_back(LeftCupObj_);
@@ -29,6 +29,7 @@ void CharacterMoney::setupCharacter()
 void CharacterMoney::reset()
 {
 	_SyceeManager.clear();
+	_SyceeManager.setAutoCreate(false);
 }
 
 //--------------------------------------------------------------
@@ -36,6 +37,7 @@ void CharacterMoney::startGame()
 {
 	if(_eState == eCHARACTER_GAMING)
 	{
+		_SyceeManager.clear();
 		_SyceeManager.setAutoCreate(true);
 	}
 }
@@ -78,7 +80,7 @@ void CharacterMoney::gestureCheck(SkeletonHandler& SkeletonHandler)
 {
 	ofVec2f LeftHand_ = SkeletonHandler.getJoints(_JointType::JointType_HandLeft);
 	ofVec2f RightHand_ = SkeletonHandler.getJoints(_JointType::JointType_HandRight);
-	ofVec2f Spin = SkeletonHandler.getJoints(_JointType::JointType_SpineMid);
+	ofVec2f Spin = SkeletonHandler.getJoints(_JointType::JointType_SpineBase);
 	
 	//Left hand check
 	if(LeftHand_.y < Spin.y)
@@ -150,6 +152,11 @@ void CharacterMoney::setupTeaching()
 //--------------------------------------------------------------
 void CharacterMoney::updateTeaching(float fDelta, SkeletonHandler& SkeletonHandler)
 {
+	if(!SkeletonHandler.getHaveUser())
+	{
+		return;
+	}
+
 	this->gestureCheck(SkeletonHandler);
 	_SyceeManager.setLeftCheck(_bLeftCup);
 	_SyceeManager.setRightCheck(_bRightCup);
@@ -168,6 +175,8 @@ void CharacterMoney::updateTeaching(float fDelta, SkeletonHandler& SkeletonHandl
 			_SyceeManager.addSycee(cWINDOW_WIDTH/2 + 200);
 		}		
 	}
+
+	this->takePicture(fDelta);
 }
 
 //--------------------------------------------------------------
@@ -186,6 +195,11 @@ void CharacterMoney::setupGaming()
 //--------------------------------------------------------------
 void CharacterMoney::updateGaming(float fDelta, SkeletonHandler& SkeletonHandler)
 {
+	if(!SkeletonHandler.getHaveUser())
+	{
+		return;
+	}
+
 	this->gestureCheck(SkeletonHandler);
 	_SyceeManager.setLeftCheck(_bLeftCup);
 	_SyceeManager.setRightCheck(_bRightCup);

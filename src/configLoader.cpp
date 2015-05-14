@@ -42,8 +42,10 @@ void configLoader::load()
 	//Money
 	_exMoneyHatAnchor.set(xml_.getValue("MONEY:HAT:X", 546), xml_.getValue("MONEY:HAT:Y", 343));
 	_exMoneyHatScale = xml_.getValue("MONEY:HAT:SCALE", 0.7);
-	_exMoneyCupAnchor.set(xml_.getValue("MONEY:CUP:X", 156), xml_.getValue("MONEY:CUP:Y", 240));
-	_exMoneyCupScale = xml_.getValue("MONEY:CUP:SCALE", 0.2);
+	_exMoneyCupLAnchor.set(xml_.getValue("MONEY:CUP_L:X", 156), xml_.getValue("MONEY:CUP_L:Y", 240));
+	_exMoneyCupLScale = xml_.getValue("MONEY:CUP_L:SCALE", 0.2);
+	_exMoneyCupRAnchor.set(xml_.getValue("MONEY:CUP_R:X", 156), xml_.getValue("MONEY:CUP_R:Y", 240));
+	_exMoneyCupRScale = xml_.getValue("MONEY:CUP_R:SCALE", 0.2);
 }
 
 //--------------------------------------------------------------
@@ -87,9 +89,14 @@ void configLoader::save(ofVec2f StartPos, float fScale)
 	xml_.setValue("MONEY:HAT:X", _exMoneyHatAnchor.x);
 	xml_.setValue("MONEY:HAT:Y", _exMoneyHatAnchor.y);
 	xml_.setValue("MONEY:HAT:SCALE", _exMoneyHatScale);
-	xml_.setValue("MONEY:CUP:X", _exMoneyHatAnchor.x);
-	xml_.setValue("MONEY:CUP:Y", _exMoneyHatAnchor.y);
-	xml_.setValue("MONEY:CUP:SCALE", _exMoneyHatScale);
+	xml_.setValue("MONEY:CUP_L:X", _exMoneyCupLAnchor.x);
+	xml_.setValue("MONEY:CUP_L:Y", _exMoneyCupLAnchor.y);
+	xml_.setValue("MONEY:CUP_L:SCALE", _exMoneyCupLScale);
+	xml_.setValue("MONEY:CUP_R:X", _exMoneyCupRAnchor.x);
+	xml_.setValue("MONEY:CUP_R:Y", _exMoneyCupRAnchor.y);
+	xml_.setValue("MONEY:CUP_R:SCALE", _exMoneyCupRScale);
+
+
 
 	if(xml_.saveFile("_config.xml"))
 	{

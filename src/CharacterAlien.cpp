@@ -154,6 +154,11 @@ void CharacterAlien::setupTeaching()
 //--------------------------------------------------------------
 void CharacterAlien::updateTeaching(float fDelta, SkeletonHandler& SkeletonHandler)
 {	
+	if(!SkeletonHandler.getHaveUser())
+	{
+		return;
+	}
+
 	float fCtrlX_ = this->getCtrlPos(SkeletonHandler);
 	_AlienCatcher.update(fDelta, fCtrlX_);
 

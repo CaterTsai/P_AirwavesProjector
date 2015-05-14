@@ -34,8 +34,8 @@ public:
 	float		_exAlienHeadScale;
 
 	//Money
-	ofVec2f		_exMoneyHatAnchor, _exMoneyCupAnchor;
-	float		_exMoneyHatScale, _exMoneyCupScale;
+	ofVec2f		_exMoneyHatAnchor, _exMoneyCupLAnchor, _exMoneyCupRAnchor;
+	float		_exMoneyHatScale, _exMoneyCupLScale, _exMoneyCupRScale;
 
 //-------------------
 //Singleton

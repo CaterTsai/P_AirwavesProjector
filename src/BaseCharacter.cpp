@@ -16,6 +16,8 @@ void CharacterObj::setup(string strName, string Filename, ofVec2f anchor, float 
 	_fScaleWidth = _obj.getWidth();
 	_fScaleHeight = _obj.getHeight();
 	_ScaleAnchor.set(_anchor);
+
+	_bDisplay = true;
 }
 
 //--------------------------------------------------------------

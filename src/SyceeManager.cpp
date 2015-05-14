@@ -39,7 +39,7 @@ void SyceeManager::setup()
 	_SyceeImg.loadImage("Money/sycee.png");
 
 	_bLeftCheck = _bRightCheck = false;
-	_fCreateTimer = 5.0;
+	_fCreateTimer = 1.0;
 }
 
 //--------------------------------------------------------------
@@ -65,6 +65,8 @@ void SyceeManager::update(float fDelta, SkeletonHandler& SkeletonHandler)
 			//Trigger event
 			string strMsg_ = "catch";
 			ofNotifyEvent(_MoneyEvent, strMsg_, this);
+
+			AudioMgr::GetInstance()->playAudio(AUDIO_NAME_MGR::A_MONEY_CATCH);
 		}
 
 		//check right hand
@@ -79,6 +81,8 @@ void SyceeManager::update(float fDelta, SkeletonHandler& SkeletonHandler)
 			//Trigger event
 			string strMsg_ = "catch";
 			ofNotifyEvent(_MoneyEvent, strMsg_, this);
+
+			AudioMgr::GetInstance()->playAudio(AUDIO_NAME_MGR::A_MONEY_CATCH);
 		}
 	}
 
@@ -140,7 +144,7 @@ void SyceeManager::clear()
 	_SyceeList.clear();
 
 	//reset
-	_fCreateTimer = 5.0;
+	_fCreateTimer = 1.0;
 }
 
 //--------------------------------------------------------------
