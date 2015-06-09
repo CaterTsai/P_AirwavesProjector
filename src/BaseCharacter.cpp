@@ -59,7 +59,6 @@ void CharacterObj::setSizebyBody(float fBody)
 	_fScaleHeight = _fBodyScale * fBody;
 	float fScale_ = (_fScaleHeight / _obj.getHeight());
 	
-
 	_fScaleWidth = _obj.getWidth() * fScale_;
 	_ScaleAnchor.x = _ScaleAnchor.x * fScale_;
 	_ScaleAnchor.y = _ScaleAnchor.y * fScale_;

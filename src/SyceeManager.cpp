@@ -26,6 +26,15 @@ void stSyceePoint::update(float fDelta)
 			}
 		}
 		break;
+	case eSYCEE_CAN_REMOVE:
+		{
+		}
+		break;
+	default:
+		{
+			//unknow state
+			eState = eSYCEE_CAN_REMOVE;
+		}
 	}
 }
 #pragma endregion

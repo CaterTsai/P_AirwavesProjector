@@ -67,6 +67,7 @@ void CharacterMgr::setCharacter(eCHARACTER_TYPE eType, float fBodySize)
 		this->stop();
 	}
 
+
 	_NowCharacter = _CharacterMap.find(eType);
 	if(_NowCharacter == _CharacterMap.end())
 	{
@@ -74,7 +75,10 @@ void CharacterMgr::setCharacter(eCHARACTER_TYPE eType, float fBodySize)
 		_NowCharacter = _CharacterMap.find(eCHARACTER_ROMA);
 	}
 
-	_NowCharacter->second->setScale(fBodySize);
+	if(fBodySize >= cMINMUM_BODY_SIZE)
+	{
+		_NowCharacter->second->setScale(fBodySize);
+	}
 }
 	
 //--------------------------------------------------------------

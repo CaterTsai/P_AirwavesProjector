@@ -19,6 +19,8 @@ typedef enum eCHARACTER_TYPE
 	eCHARACTER_NUM
 };
 
+const float cMINMUM_BODY_SIZE = 200.0;
+
 //Roma
 const int cARROW_TRIGGER_SHIELD_X = 60;
 const int cARROW_TRIGGER_SPEAR_X = 80;
@@ -67,7 +69,7 @@ const float cANGEL_PICTURE_INTERVAL = cANGEL_SHORTEST_TIME/cPICTURE_NUM;
 //Money
 const float cSYCEE_CATCH_DISTANCE_Y = 50;
 const float cSYCEE_CATCH_DISTANCE_X = 80;
-const pair<float, float>	cSYCEE_FALLING_DURACTION = make_pair(0.5, 1.5);
+const pair<float, float>	cSYCEE_FALLING_DURACTION = make_pair(1.5, 2.0);
 const pair<float, float>	cSYCEE_CREATE_CURATION = make_pair(0.2, 0.5);
 const float cSYCEE_SHORTEST_TIME = 5.0;
 const float cSYCEE_PICTURE_INTERVAL = cSYCEE_SHORTEST_TIME/cPICTURE_NUM;

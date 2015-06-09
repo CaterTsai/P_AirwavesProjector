@@ -26,7 +26,7 @@ typedef struct _stSyceePoint
 		:eState(eSYCEE_FALLING)
 		,Position(Start)
 		,fScale(1.0)
-		,fDegree(ofRandom(0, 359))
+		,fDegree(0.0)
 	{
 		AnimFalling.setCurve(AnimCurve::EASE_IN);
 		AnimFalling.setDuration(ofRandom(cSYCEE_FALLING_DURACTION.first, cSYCEE_FALLING_DURACTION.second));
